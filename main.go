@@ -1,18 +1,19 @@
 package main
 
 import (
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"net/http"
+	"os"
+
+	"github.com/vonji/controllers"
+
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
-	"vonji/controllers"
-	"github.com/gorilla/handlers"
-	"os"
-	"vonji/App"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/vonji/app"
 )
 
 func main() {
-
 	db, err := gorm.Open("postgres", "user=api password=NOT0 dbname=vonji sslmode=disable")
 
 	defer db.Close()
@@ -29,7 +30,6 @@ func main() {
 
 	app.Init(r)
 	vonji.Init(&app, db)
-
 
 	http.ListenAndServe(":8080", handlers.LoggingHandler(os.Stdout, r))
 }
