@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Controller interface {//todo maybe this interface is useless
+//TODO maybe this interface is useless
+type Controller interface {
 	Init(r *mux.Router)
 }
