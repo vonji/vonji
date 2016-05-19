@@ -3,14 +3,11 @@ package main
 import (
 	"net/http"
 	"os"
-
-	"github.com/vonji/controllers"
-
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/vonji/app"
+	"vonji/app"
 )
 
 func main() {
@@ -26,10 +23,9 @@ func main() {
 
 	app := vonji.App{}
 
-	app.RegisterController(&controllers.UserController{})
-
 	app.Init(r)
-	vonji.Init(&app, db)
+	vonji.InitContext(&app, db)
+	vonji.RegisterRoutes(r)
 
 	http.ListenAndServe(":8080", handlers.LoggingHandler(os.Stdout, r))
 }

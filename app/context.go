@@ -9,7 +9,7 @@ type Context struct {
 
 var context = Context{}
 
-func Init(app *App, db *gorm.DB) {
+func InitContext(app *App, db *gorm.DB) {
 	context.App = app
 	context.Db = db
 }
