@@ -10,4 +10,9 @@ import (
 func RegisterRoutes(r *mux.Router) {
 	r.PathPrefix("/static/").Handler(http.FileServer(http.Dir("")))
 	r.PathPrefix("/views/").Handler(http.FileServer(http.Dir("")))//todo THIS MAY NOT BE SECURE
+
+	ru := r.PathPrefix("/user").Subrouter()
+	ru.Methods("GET").HandlerFunc(GetUser)
+	ru.Methods("POST").HandlerFunc(CreateUser)
+
 }

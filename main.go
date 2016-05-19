@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"vonji/app"
+	"vonji/controllers"
 )
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 
 	app.Init(r)
 	vonji.InitContext(&app, db)
-	vonji.RegisterRoutes(r)
+	controllers.RegisterRoutes(r)
 
 	http.ListenAndServe(":8080", handlers.LoggingHandler(os.Stdout, r))
 }

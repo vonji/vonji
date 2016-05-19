@@ -10,5 +10,4 @@ type App struct {
 
 func (a *App) Init(router *mux.Router) {
 	a.Router = router
-	RegisterRoutes(router)
 }
