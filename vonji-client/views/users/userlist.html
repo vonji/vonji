@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vonji</title>
+    <!--<link rel="stylesheet" href="css/layout.css" type="text/css">-->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <style>
+        .user-list {
+            margin-top: 25px;
+        }
+        .user {
+            display: inline-block;
+            border: solid black 1px;
+            border-radius: 5px;
+            margin: 25px;
+            padding: 10px;
+            height: 150px;
+            width: 350px;
+        }
+        .tag {
+            display: inline-block;
+            border: solid black 2px;
+            box-shadow: 3px 3px black;
+            padding-left: 2px;
+            padding-right: 2px;
+            margin: 2px;
+        }
+        #avatar {
+            width: 50px;
+            height: 50px;
+        }
+        #search>div {
+            display: inline-block;
+            padding: 1px;
+            border: solid grey 2px;
+            border-right: none;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+        }
+        #search>input {
+            width: 400px;
+            border-left: none;
+            border-top-right-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+    </style>
+</head>
+<body class="container-fluid">
+
+<!-- TODO bootstrap -->
+
+<div class="row">
+    <div class="col-md-6"><h2>Vonji factory</h2></div>
+    <div class="col-md-6"><span class="glyphicon glyphicon-inbox"></span><div>Username (418 vCoins) disconnect</div></div>
+</div>
+
+<hr/>
+
+<div class="row">
+    <div class="col-md-6"><h1>Users</h1></div>
+    <div class="col-md-6">réputation | nouveaux | moderateurs | administrateurs </div>
+</div>
+
+<hr/>
+
+<div id="search"><div><span class="glyphicon glyphicon-search"></span></div><input id="search-bar" type="text" placeholder="Saissez un nom de membre, un lieu ou une compétence"></div>
+
+<div class="user-list row">
+    <div class="user" v-for="user in filtered">
+        <div class="row">
+            <div class="col-md-4" id="avatar"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6">{{user.FirstName}} {{user.LastName}}</div>
+                    <div class="col-md-2">{{user.Location}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"><i>{{user.Description}}</i></div>
+                    <div class="col-md-6">{{user.VReputation}} vR</div>
+                </div>
+                <div>
+                    <div class="tag" v-for="tag in user.Tags">
+                        {{tag.Name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap require jquery <3.0 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<button onclick="loadUsers()">Refresh</button>
+<script type="text/javascript">
+
+    Vue.config.debug = true;
+
+    function loadUsers() {
+        $.ajax({
+            url: 'http://localhost:1618/users',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            crossDomain: true,
+            success: function (res) {
+                new Vue({
+                    el: '.user',
+                    data: {
+                        users: res
+                    },
+                    computed: {
+                        filtered: function () {
+                            var search = $('#search-bar').val();
+                            console.log(search);
+                            return this.users.filter(function (user) {
+                                Object.keys(user).find(function(e, _) {
+                                    true//user[e].contains(search);
+                                });
+                            })
+                        }
+                    },
+                    debug: true
+                });
+            },
+            error: function (jqXHR, status, error) {
+                console.error(error);
+            }
+        });
+    }
+    loadUsers();
+</script>
+</body>
+</html>

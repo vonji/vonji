@@ -9,16 +9,25 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"vonji/app"
 	"vonji/controllers"
+	"github.com/rs/cors"
 )
 
 func main() {
 	db, err := gorm.Open("postgres", "user=api password=NOT0 dbname=vonji sslmode=disable")
+
+	db.LogMode(true)
 
 	defer db.Close()
 
 	if err != nil {
 		panic(err.Error())
 	}
+
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string { "*" },
+		AllowedMethods: []string { "GET", "POST", "PUT", "DELETE" },
+		Debug: true,
+	})
 
 	r := mux.NewRouter()
 
@@ -28,5 +37,6 @@ func main() {
 	vonji.InitContext(&app, db)
 	controllers.RegisterRoutes(r)
 
-	http.ListenAndServe(":8080", handlers.LoggingHandler(os.Stdout, r))
+	//TODO use something like Alice to chain middlewares
+	http.ListenAndServe(":1618", handlers.LoggingHandler(os.Stdout, c.Handler(r)))
 }

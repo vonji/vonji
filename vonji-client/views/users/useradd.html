@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vonji</title>
+    <!--<link rel="stylesheet" href="css/layout.css" type="text/css">-->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <style>
+        #topbar {
+            margin-bottom: 70px;
+        }
+    </style>
+</head>
+<body class="container-fluid">
+
+<!-- TODO bootstrap -->
+
+<div class="row" id="topbar">
+    <div class="col-md-6"><h2>Vonji factory</h2></div>
+    <div class="col-md-6"><span class="glyphicon glyphicon-inbox"></span><div>Username (418 vCoins) disconnect</div></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <input type="email" placeholder="email">
+        <input type="password" placeholder="password">
+        <input type="text" placeholder="prenom">
+        <input type="text" placeholder="nom">
+        <input type="text" placeholder="description">
+        <input type="submit">
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<!-- Bootstrap require jquery <3.0 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>-->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    Vue.config.debug = true;
+
+    String.prototype.contains = function(it) { return this.indexOf(it) !== -1; };//
+
+    new Vue({
+        el: 'input#search',
+    });
+
+    function loadUsers() {
+        $.ajax({
+            url: 'http://localhost:1618/users',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            crossDomain: true,
+            success: function (res) {
+                new Vue({
+                    el: '.user'
+                });
+            },
+            error: function (jqXHR, status, error) {
+                console.error(error);
+            }
+        });
+    }
+    loadUsers();
+</script>
+</body>
+</html>
