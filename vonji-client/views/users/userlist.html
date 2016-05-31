@@ -19,7 +19,7 @@
         .user {
             display: inline-block;
             border: solid black 1px;
-            border-radius: 5px;
+            border-radius: 15px;
             margin: 25px;
             padding: 10px;
             height: 150px;
@@ -34,14 +34,17 @@
             margin: 2px;
         }
         #avatar {
+            margin-right: 10px;
             width: 50px;
             height: 50px;
         }
+
         #search>div {
             display: inline-block;
             padding: 1px;
-            border: solid grey 2px;
+            border: solid 2px;
             border-right: none;
+            border-color: darkgrey whitesmoke whitesmoke darkgrey;
             border-top-left-radius: 15px;
             border-bottom-left-radius: 15px;
         }
@@ -74,9 +77,9 @@
 <div id="search"><div><span class="glyphicon glyphicon-search"></span></div><input id="search-bar" type="text" placeholder="Saissez un nom de membre, un lieu ou une compétence"></div>
 
 <div class="user-list row">
-    <div class="user" v-for="user in filtered">
+    <div class="user" v-for="user in users">
         <div class="row">
-            <div class="col-md-4" id="avatar"></div>
+            <div class="col-md-4" id="avatar"><img src="https://placehold.it/50x50" alt="avatar"></div>
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-6">{{user.FirstName}} {{user.LastName}}</div>

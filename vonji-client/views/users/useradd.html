@@ -27,17 +27,19 @@
     <div class="col-md-6"><span class="glyphicon glyphicon-inbox"></span><div>Username (418 vCoins) disconnect</div></div>
 </div>
 
-<div class="row">
+<div class="row" id="form">
     <div class="col-md-3"></div>
     <div class="col-md-6">
-        <input type="email" placeholder="email">
-        <input type="password" placeholder="password">
-        <input type="text" placeholder="prenom">
-        <input type="text" placeholder="nom">
-        <input type="text" placeholder="description">
-        <input type="submit">
+        <form id="user-registration-form">
+            <!--<input name="email" type="email" v-model="email" placeholder="email">
+            <input name="password" type="password" placeholder="password">
+            --><input name="FirstName" type="text" placeholder="prenom">
+            <input name="LastName" type="text" placeholder="nom">
+            <input name="Description" type="text" placeholder="description">
+            <button type="submit">Submit</button>
+        </form>
     </div>
-    <div class="col-md-3"></div>
+    <div class="col-md-3">{{email}}</div>
 </div>
 
 <!-- Bootstrap require jquery <3.0 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>-->
@@ -46,33 +48,35 @@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
+<script src="/static/js/lib/jquery.serializejson.min.js"></script>
+
 <script type="text/javascript">
 
     Vue.config.debug = true;
 
-    String.prototype.contains = function(it) { return this.indexOf(it) !== -1; };//
-
     new Vue({
-        el: 'input#search',
+        el: '#form'
     });
 
-    function loadUsers() {
+    $('#user-registration-form').submit(function(e) {
+        e.preventDefault();
+        var data = JSON.stringify($('#user-registration-form').serializeJSON());
+        console.log(data);
         $.ajax({
             url: 'http://localhost:1618/users',
             contentType: 'application/json; charset=utf-8',
+            method: 'POST',
             dataType: 'json',
-            crossDomain: true,
-            success: function (res) {
-                new Vue({
-                    el: '.user'
-                });
+            data: data,//
+            success: function () {
+                console.log("success");
             },
             error: function (jqXHR, status, error) {
                 console.error(error);
             }
         });
-    }
-    loadUsers();
+    });
+
 </script>
 </body>
 </html>
