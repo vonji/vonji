@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"vonji/models"
+	"vonji/vonji-server/models"
 	"encoding/json"
-	"vonji/app"
+	"vonji/vonji-server/app"
 	"github.com/gorilla/mux"
 )
 

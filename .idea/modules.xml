@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/vonji.iml" filepath="$PROJECT_DIR$/vonji.iml" />
       <module fileurl="file://$PROJECT_DIR$/vonji-client/vonji-client.iml" filepath="$PROJECT_DIR$/vonji-client/vonji-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vonji-server/vonji-server.iml" filepath="$PROJECT_DIR$/vonji-server/vonji-server.iml" />
     </modules>
   </component>
 </project>
