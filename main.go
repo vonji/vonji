@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Ephasme/vonji/controllers"
-	"github.com/Ephasme/vonji/vonji"
+	"github.com/vonji/vonji-server/controllers"
+	"github.com/vonji/vonji-server/vonji"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
