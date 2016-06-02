@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/vonji/vonji-server/api"
 	"github.com/vonji/vonji-server/models"
-	"github.com/vonji/vonji-server/vonji"
 
 	"github.com/gorilla/mux"
 )
@@ -15,7 +15,7 @@ import (
 //TODO status code + all responses should be JSON
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	ctx := vonji.GetContext()
+	ctx := api.GetContext()
 
 	users := []models.User{}
 	ctx.Db.Find(&users)
@@ -27,7 +27,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUserById(w http.ResponseWriter, r *http.Request) {
-	ctx := vonji.GetContext()
+	ctx := api.GetContext()
 	user := models.User{}
 
 	id, err := parseUint(mux.Vars(r)["id"]) //TODO find shorter syntax
@@ -50,7 +50,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
-	ctx := vonji.GetContext()
+	ctx := api.GetContext()
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -61,7 +61,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
-	ctx := vonji.GetContext()
+	ctx := api.GetContext()
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -72,7 +72,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
-	ctx := vonji.GetContext()
+	ctx := api.GetContext()
 
 	id, err := parseUint(mux.Vars(r)["id"]) //TODO find shorter syntax
 

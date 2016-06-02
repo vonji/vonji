@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/vonji/vonji-server/controllers"
-	"github.com/vonji/vonji-server/vonji"
+	"github.com/vonji/vonji-server/api"
+	"github.com/vonji/vonji-server/routers"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -35,11 +35,11 @@ func main() {
 
 	r := mux.NewRouter()
 
-	app := vonji.App{}
+	app := api.App{}
 
 	app.Init(r)
-	vonji.InitContext(&app, db)
-	controllers.RegisterRoutes(r)
+	api.InitContext(&app, db)
+	routers.RegisterRoutes(r)
 
 	//TODO use something like Alice to chain middlewares
 	http.ListenAndServe(":1618", handlers.LoggingHandler(os.Stdout, c.Handler(r)))
