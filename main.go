@@ -3,13 +3,17 @@ package main
 import (
 	"net/http"
 	"os"
+
+	"github.com/Ephasme/vonji/controllers"
+	"github.com/Ephasme/vonji/vonji"
+
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"vonji/vonji-server/controllers"
+
 	"github.com/rs/cors"
-	"vonji/vonji-server/app"
 )
 
 func main() {
@@ -24,9 +28,9 @@ func main() {
 	}
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string { "*" },
-		AllowedMethods: []string { "GET", "POST", "PUT", "DELETE" },
-		Debug: true,
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		Debug:          true,
 	})
 
 	r := mux.NewRouter()

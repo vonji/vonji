@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
-	"vonji/vonji-server/models"
-	"encoding/json"
-	"vonji/vonji-server/app"
+
+	"github.com/Ephasme/vonji/models"
+	"github.com/Ephasme/vonji/vonji"
+
 	"github.com/gorilla/mux"
 )
 
@@ -17,7 +19,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	users := []models.User{}
 	ctx.Db.Find(&users)
-	for i, user := range users {//TODO There must be another way to do this
+	for i, user := range users { //TODO There must be another way to do this
 		ctx.Db.Model(&user).Association("tags").Find(&users[i].Tags)
 	}
 
@@ -28,7 +30,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	ctx := vonji.GetContext()
 	user := models.User{}
 
-	id, err := parseUint(mux.Vars(r)["id"])//TODO find shorter syntax
+	id, err := parseUint(mux.Vars(r)["id"]) //TODO find shorter syntax
 
 	if err != nil {
 		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
@@ -37,7 +39,6 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 	ctx.Db.First(&user, id)
 	ctx.Db.Model(&user).Association("tags").Find(&user.Tags)
-
 
 	if user.ID == 0 {
 		http.Error(w, fmt.Sprintf("No user with ID %d found", id), http.StatusNotFound)
@@ -55,7 +56,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	ctx.Db.Create(&user)//TODO check security
+	ctx.Db.Create(&user) //TODO check security
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
@@ -66,14 +67,14 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	ctx.Db.Save(&user)//TODO check security
+	ctx.Db.Save(&user) //TODO check security
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
 	ctx := vonji.GetContext()
 
-	id, err := parseUint(mux.Vars(r)["id"])//TODO find shorter syntax
+	id, err := parseUint(mux.Vars(r)["id"]) //TODO find shorter syntax
 
 	if err != nil {
 		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
@@ -82,11 +83,11 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	user.ID = id
 
-	ctx.Db.Delete(&user)//Soft delete
+	ctx.Db.Delete(&user) //Soft delete
 	//TODO return error if the id does not exist
 }
 
-func parseUint(s string) (uint, error) {//TODO move
+func parseUint(s string) (uint, error) { //TODO move
 	n, err := strconv.ParseUint(s, 10, 64)
 	return uint(n), err
 }

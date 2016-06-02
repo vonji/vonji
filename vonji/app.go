@@ -5,7 +5,7 @@ import (
 )
 
 type App struct {
-	Router      *mux.Router
+	Router *mux.Router
 }
 
 func (a *App) Init(router *mux.Router) {
