@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/vonji/vonji-server/api"
-	"github.com/vonji/vonji-server/routers"
+	"github.com/vonji/vonji-api/api"
+	"github.com/vonji/vonji-api/routers"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"

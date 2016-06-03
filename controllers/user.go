@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/vonji/vonji-server/api"
-	"github.com/vonji/vonji-server/models"
+	"github.com/vonji/vonji-api/api"
+	"github.com/vonji/vonji-api/models"
 
 	"github.com/gorilla/mux"
 )

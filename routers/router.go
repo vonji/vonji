@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/vonji/vonji-server/controllers"
+	"github.com/vonji/vonji-api/controllers"
 )
 
 //TODO move this file somewhere else
