@@ -1,6 +1,8 @@
-package vonji
+package api
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Context struct {
 	App *App

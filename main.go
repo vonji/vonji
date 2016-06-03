@@ -3,13 +3,17 @@ package main
 import (
 	"net/http"
 	"os"
+
+	"github.com/vonji/vonji-api/api"
+	"github.com/vonji/vonji-api/routers"
+
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"vonji/vonji-server/controllers"
+
 	"github.com/rs/cors"
-	"vonji/vonji-server/app"
 )
 
 func main() {
@@ -24,18 +28,18 @@ func main() {
 	}
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string { "*" },
-		AllowedMethods: []string { "GET", "POST", "PUT", "DELETE" },
-		Debug: true,
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		Debug:          true,
 	})
 
 	r := mux.NewRouter()
 
-	app := vonji.App{}
+	app := api.App{}
 
 	app.Init(r)
-	vonji.InitContext(&app, db)
-	controllers.RegisterRoutes(r)
+	api.InitContext(&app, db)
+	routers.RegisterRoutes(r)
 
 	//TODO use something like Alice to chain middlewares
 	http.ListenAndServe(":1618", handlers.LoggingHandler(os.Stdout, c.Handler(r)))
