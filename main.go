@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/vonji/vonji-api/api"
+	"github.com/vonji/vonji-api/models"
 	"github.com/vonji/vonji-api/routers"
 
 	"github.com/gorilla/handlers"
@@ -22,6 +23,7 @@ func main() {
 	db.LogMode(true)
 
 	defer db.Close()
+	db.AutoMigrate(&models.Tag{}, &models.User{})
 
 	if err != nil {
 		panic(err.Error())
