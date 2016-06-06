@@ -21,9 +21,18 @@
 </head>
 <body class="container-fluid">
 
-    <div class="row">
+    <div class="row" id="topbar">
         <div class="col-md-6"><h2>Vonji factory</h2></div>
-        <div class="col-md-6"><span class="glyphicon glyphicon-inbox"></span><div>Username (418 vCoins) disconnect</div></div>
+        <div class="col-md-6">
+            <div v-if="logged">
+                <span class="glyphicon glyphicon-inbox"></span><div>{{userName}} (418 vCoins) <a id="disconnect-link" v-on:click="logout()">disconnect</a></div>
+            </div>
+            <div v-else>
+                <input v-model="userName" type="text" name="userName" placeholder="username">
+                <input type="password" name="password" placeholder="password">
+                <button v-on:click="login()" v-on:keyup.enter="login()">login</button>
+            </div>
+        </div>
     </div>
 
     <hr/>

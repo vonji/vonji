@@ -2,5 +2,37 @@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
+<script>
+    Vue.config.debug = true;
+    localStorage.userName = localStorage.userName === undefined ? "" : localStorage.userName;
+
+    //Maybe this should be in header?
+    $(function () {
+        new Vue({
+            el: '#topbar',
+            data: {
+                userName: localStorage.userName,
+                logged: !!localStorage.userName.trim()
+            },
+            methods: {
+                login: function () {
+                    var userName = this.userName.trim();
+
+                    if (userName) {
+                        localStorage.userName = userName;
+                        logged = true;
+                        location.reload(false);
+                    }
+                },
+                logout: function () {
+                    localStorage.userName = "";
+                    this.userName = "";
+                    logged = false;
+                }
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
