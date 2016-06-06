@@ -160,3 +160,7 @@ sftp-config.json
 # Notepad++ backups #
 *.bak
 
+### Sass template
+.sass-cache/
+*.css.map
+
