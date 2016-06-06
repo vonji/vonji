@@ -12,11 +12,10 @@ func RegisterRoutes(r *mux.Router) {
 	r.PathPrefix("/static/").Handler(http.FileServer(http.Dir("")))
 	r.PathPrefix("/views/").Handler(http.FileServer(http.Dir("")))//todo THIS MAY NOT BE SECURE
 
-	ru := r.PathPrefix("/user").Subrouter()
+	ru := r.PathPrefix("/users").Subrouter()
 	ru.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetUserById)
 	ru.Methods("GET").HandlerFunc(GetUser)
 	ru.Methods("POST").HandlerFunc(CreateUser)
 	ru.Methods("PUT").HandlerFunc(UpdateUser)
 	ru.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteUser)
-
 }
