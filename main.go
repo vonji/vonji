@@ -7,9 +7,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"vonji/vonji-server/controllers"
+	"vonji-api/controllers"
 	"github.com/rs/cors"
-	"vonji/vonji-server/app"
+	"vonji-api/app"
 )
 
 func main() {
