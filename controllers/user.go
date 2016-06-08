@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"vonji-api/models"
 	"encoding/json"
 	"vonji-api/app"
@@ -37,7 +36,6 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 	ctx.Db.First(&user, id)
 	ctx.Db.Model(&user).Association("tags").Find(&user.Tags)
-
 
 	if user.ID == 0 {
 		http.Error(w, fmt.Sprintf("No user with ID %d found", id), http.StatusNotFound)
@@ -84,9 +82,4 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	ctx.Db.Delete(&user)//Soft delete
 	//TODO return error if the id does not exist
-}
-
-func parseUint(s string) (uint, error) {//TODO move
-	n, err := strconv.ParseUint(s, 10, 64)
-	return uint(n), err
 }
