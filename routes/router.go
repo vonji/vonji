@@ -11,7 +11,7 @@ import (
 func RegisterRoutes(r *mux.Router) {
 	ru := r.PathPrefix("/users").Subrouter()
 	ru.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.GetUserById)
-	ru.Methods("GET").HandlerFunc(controllers.GetUser)
+	ru.Methods("GET").HandlerFunc(controllers.GetUsers)
 	ru.Methods("POST").HandlerFunc(controllers.CreateUser)
 	ru.Methods("PUT").HandlerFunc(controllers.UpdateUser)
 	ru.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.DeleteUser)

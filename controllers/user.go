@@ -13,7 +13,7 @@ import (
 
 //TODO status code + all responses should be JSON
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
+func GetUsers(w http.ResponseWriter, r *http.Request) {
 	ctx := api.GetContext()
 
 	users := []models.User{}
