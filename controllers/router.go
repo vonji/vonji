@@ -1,8 +1,6 @@
 package controllers
 
-import (
-	"github.com/gorilla/mux"
-)
+import "github.com/gorilla/mux"
 
 //TODO move this file somewhere else
 //TODO auto register default routes (send type in param or something)
