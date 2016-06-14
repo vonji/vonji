@@ -15,4 +15,11 @@ func RegisterRoutes(r *mux.Router) {
 	ru.Methods("POST").HandlerFunc(controllers.CreateUser)
 	ru.Methods("PUT").HandlerFunc(controllers.UpdateUser)
 	ru.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.DeleteUser)
+
+	rq := r.PathPrefix("/requests").Subrouter()
+	rq.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.GetRequestById)
+	rq.Methods("GET").HandlerFunc(controllers.GetRequests)
+	rq.Methods("POST").HandlerFunc(controllers.CreateRequest)
+	rq.Methods("PUT").HandlerFunc(controllers.UpdateRequest)
+	rq.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.DeleteRequest)
 }
