@@ -5,7 +5,6 @@ import (
 	"github.com/vonji/vonji-api/controllers"
 )
 
-//TODO move this file somewhere else
 //TODO auto register default routes (send type in param or something)
 //The order is important
 func RegisterRoutes(r *mux.Router) {
@@ -22,4 +21,11 @@ func RegisterRoutes(r *mux.Router) {
 	rq.Methods("POST").HandlerFunc(controllers.CreateRequest)
 	rq.Methods("PUT").HandlerFunc(controllers.UpdateRequest)
 	rq.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.DeleteRequest)
+
+	rs := r.PathPrefix("/responses").Subrouter()
+	rs.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.GetResponseById)
+	rs.Methods("GET").HandlerFunc(controllers.GetResponse)
+	rs.Methods("POST").HandlerFunc(controllers.CreateResponse)
+	rs.Methods("PUT").HandlerFunc(controllers.UpdateResponse)
+	rs.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(controllers.DeleteResponse)
 }

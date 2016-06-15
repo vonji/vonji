@@ -17,6 +17,7 @@ func GetRequests(w http.ResponseWriter, r *http.Request) {
 
 	for i, request := range requests {
 		ctx.Db.Model(&request).Related(&requests[i].User)
+		ctx.Db.Model(&request).Related(&requests[i].Responses)
 	}
 
 	json.NewEncoder(w).Encode(requests)
@@ -35,6 +36,7 @@ func GetRequestById(w http.ResponseWriter, r *http.Request) {
 
 	ctx.Db.First(&request, id)
 	ctx.Db.Model(&request).Related(&request.User)
+	ctx.Db.Model(&request).Related(&request.Responses)
 
 	if request.ID == 0 {
 		http.Error(w, fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound)
@@ -81,5 +83,6 @@ func DeleteRequest(w http.ResponseWriter, r *http.Request) {
 
 	request.ID = id
 
-	ctx.Db.Delete(&request)//Soft delete
+	ctx.Db.Delete(&request)
+	ctx.Db.Where(&models.Response{ RequestID: request.ID }).Delete(&models.Response{})
 }

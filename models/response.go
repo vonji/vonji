@@ -2,9 +2,8 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-type Request struct {
+type Response struct {
 	gorm.Model
 	Post
-	Title string
-	Responses []Response
+	RequestID uint
 }

@@ -25,7 +25,7 @@ func main() {
 	db.LogMode(true)
 
 	defer db.Close()
-	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{})
+	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{})
 
 	if err != nil {
 		panic(err.Error())
@@ -34,7 +34,7 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
-		Debug:          true,
+		Debug:          false,
 	})
 
 	r := mux.NewRouter()
