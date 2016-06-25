@@ -18,6 +18,9 @@ func GetRequests(w http.ResponseWriter, r *http.Request) {
 	for i, request := range requests {
 		ctx.Db.Model(&request).Related(&requests[i].User)
 		ctx.Db.Model(&request).Related(&requests[i].Responses)
+		for j, response := range requests[i].Responses {
+			ctx.Db.Model(&response).Related(&requests[i].Responses[j].User)
+		}
 	}
 
 	json.NewEncoder(w).Encode(requests)
@@ -37,6 +40,9 @@ func GetRequestById(w http.ResponseWriter, r *http.Request) {
 	ctx.Db.First(&request, id)
 	ctx.Db.Model(&request).Related(&request.User)
 	ctx.Db.Model(&request).Related(&request.Responses)
+	for i, response := range request.Responses {
+		ctx.Db.Model(&response).Related(&request.Responses[i].User)
+	}
 
 	if request.ID == 0 {
 		http.Error(w, fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound)
