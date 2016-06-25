@@ -24,7 +24,7 @@ func GetResponse(w http.ResponseWriter, r *http.Request) {
 
 func GetResponseById(w http.ResponseWriter, r *http.Request) {
 	ctx := api.GetContext()
-	responses := models.Response{}
+	response := models.Response{}
 
 	id, err := parseUint(mux.Vars(r)["id"])
 
@@ -33,15 +33,16 @@ func GetResponseById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx.Db.First(&responses, id)
-	ctx.Db.Model(&responses).Related(&responses.User)
+	ctx.Db.First(&response, id)
+	ctx.Db.Model(&response).Related(&response.User)
 
-	if responses.ID == 0 {
+
+	if response.ID == 0 {
 		http.Error(w, fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound)
 		return
 	}
 
-	json.NewEncoder(w).Encode(responses)
+	json.NewEncoder(w).Encode(response)
 }
 
 func CreateResponse(w http.ResponseWriter, r *http.Request) {
