@@ -37,12 +37,13 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx.Db.First(&user, id)
-	ctx.Db.Model(&user).Association("tags").Find(&user.Tags)
 
 	if user.ID == 0 {
 		http.Error(w, fmt.Sprintf("No user with ID %d found", id), http.StatusNotFound)
 		return
 	}
+
+	ctx.Db.Model(&user).Association("tags").Find(&user.Tags)
 
 	json.NewEncoder(w).Encode(user)
 }

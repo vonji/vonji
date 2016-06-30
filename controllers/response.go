@@ -34,13 +34,13 @@ func GetResponseById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx.Db.First(&response, id)
-	ctx.Db.Model(&response).Related(&response.User)
-
 
 	if response.ID == 0 {
 		http.Error(w, fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound)
 		return
 	}
+
+	ctx.Db.Model(&response).Related(&response.User)
 
 	json.NewEncoder(w).Encode(response)
 }
