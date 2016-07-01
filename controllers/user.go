@@ -48,6 +48,24 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
+func GetUserByEmail(w http.ResponseWriter, r *http.Request) {
+	ctx := api.GetContext()
+	user := models.User{}
+
+	user.Email = mux.Vars(r)["email"]
+
+	ctx.Db.Where(&user).First(&user)
+
+	if user.ID == 0 {
+		http.Error(w, fmt.Sprintf("No user with email %s was found", user.Email), http.StatusNotFound)
+		return
+	}
+
+	ctx.Db.Model(&user).Association("tags").Find(&user.Tags)
+
+	json.NewEncoder(w).Encode(user)
+}
+
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
 	ctx := api.GetContext()
