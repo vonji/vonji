@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
+	"strconv"
+
 	"github.com/gorilla/mux"
-	"github.com/vonji/vonji-api/models"
 	"github.com/vonji/vonji-api/api"
+	"github.com/vonji/vonji-api/models"
 )
 
 func GetResponse(w http.ResponseWriter, r *http.Request) {
@@ -55,6 +57,9 @@ func CreateResponse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx.Db.Create(&response)
+
+	w.WriteHeader(201)
+	w.Write([]byte(strconv.Itoa(int(response.ID))))
 }
 
 func UpdateResponse(w http.ResponseWriter, r *http.Request) {
@@ -84,4 +89,3 @@ func DeleteResponse(w http.ResponseWriter, r *http.Request) {
 
 	ctx.Db.Delete(&response)
 }
-
