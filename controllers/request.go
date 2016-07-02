@@ -1,59 +1,62 @@
 package controllers
 
 import (
-	"fmt"
-	"net/http"
 	"encoding/json"
-	"github.com/gorilla/mux"
-	"github.com/vonji/vonji-api/models"
+	"net/http"
+
 	"github.com/vonji/vonji-api/api"
+	"github.com/vonji/vonji-api/models"
 )
 
-func GetRequests(w http.ResponseWriter, r *http.Request) {
-	ctx := api.GetContext()
+type RequestController struct {
+	APIBaseController
+}
 
+func (ctrl RequestController) GetAll() interface{} {
 	requests := []models.Request{}
-	ctx.Db.Find(&requests)
+	ctrl.GetDB().Find(&requests)
 
 	for i, request := range requests {
-		ctx.Db.Model(&request).Related(&requests[i].User)
-		ctx.Db.Model(&request).Related(&requests[i].Responses)
+		ctrl.GetDB().Model(&request).Related(&requests[i].User)
+		ctrl.GetDB().Model(&request).Related(&requests[i].Responses)
 		for j, response := range requests[i].Responses {
-			ctx.Db.Model(&response).Related(&requests[i].Responses[j].User)
+			ctrl.GetDB().Model(&response).Related(&requests[i].Responses[j].User)
 		}
 	}
 
-	json.NewEncoder(w).Encode(requests)
+	return requests
 }
 
-func GetRequestById(w http.ResponseWriter, r *http.Request) {
-	ctx := api.GetContext()
+func (ctrl RequestController) GetOne(id uint) interface{} {
 	request := models.Request{}
+	ctrl.GetDB().First(&request, id)
 
-	id, err := parseUint(mux.Vars(r)["id"])
+	ctrl.CheckID(id)
 
-	if err != nil {
-		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
-		return
-	}
-
-	ctx.Db.First(&request, id)
-
-	if request.ID == 0 {
-		http.Error(w, fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound)
-		return
-	}
-
-	ctx.Db.Model(&request).Related(&request.User)
-	ctx.Db.Model(&request).Related(&request.Responses)
+	ctrl.GetDB().Model(&request).Related(&request.User)
+	ctrl.GetDB().Model(&request).Related(&request.Responses)
 	for i, response := range request.Responses {
-		ctx.Db.Model(&response).Related(&request.Responses[i].User)
+		ctrl.GetDB().Model(&response).Related(&request.Responses[i].User)
 	}
 
-	json.NewEncoder(w).Encode(request)
+	return request
 }
 
-func CreateRequest(w http.ResponseWriter, r *http.Request) {
+func (ctrl RequestController) Create(w http.ResponseWriter, r *http.Request) interface{} {
+	request := models.Request{}
+	ctx := api.GetContext()
+
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return nil
+	}
+
+	ctx.DB.Create(&request)
+
+	return request
+}
+
+func (ctrl RequestController) Update(w http.ResponseWriter, r *http.Request) {
 	request := models.Request{}
 	ctx := api.GetContext()
 
@@ -62,34 +65,15 @@ func CreateRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx.Db.Create(&request)
+	ctx.DB.Save(&request)
 }
 
-func UpdateRequest(w http.ResponseWriter, r *http.Request) {
+func (ctrl RequestController) Delete(id uint, w http.ResponseWriter, r *http.Request) {
 	request := models.Request{}
 	ctx := api.GetContext()
-
-	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	ctx.Db.Save(&request)
-}
-
-func DeleteRequest(w http.ResponseWriter, r *http.Request) {
-	request := models.Request{}
-	ctx := api.GetContext()
-
-	id, err := parseUint(mux.Vars(r)["id"])
-
-	if err != nil {
-		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
-		return
-	}
 
 	request.ID = id
 
-	ctx.Db.Delete(&request)
-	ctx.Db.Where(&models.Response{ RequestID: request.ID }).Delete(&models.Response{})
+	ctx.DB.Delete(&request)
+	ctx.DB.Where(&models.Response{RequestID: request.ID}).Delete(&models.Response{})
 }

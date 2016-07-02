@@ -15,10 +15,10 @@ func GetResponse(w http.ResponseWriter, r *http.Request) {
 	ctx := api.GetContext()
 
 	responses := []models.Response{}
-	ctx.Db.Find(&responses)
+	ctx.DB.Find(&responses)
 
 	for i, request := range responses {
-		ctx.Db.Model(&request).Related(&responses[i].User)
+		ctx.DB.Model(&request).Related(&responses[i].User)
 	}
 
 	json.NewEncoder(w).Encode(responses)
@@ -35,14 +35,14 @@ func GetResponseById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx.Db.First(&response, id)
+	ctx.DB.First(&response, id)
 
 	if response.ID == 0 {
 		http.Error(w, fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound)
 		return
 	}
 
-	ctx.Db.Model(&response).Related(&response.User)
+	ctx.DB.Model(&response).Related(&response.User)
 
 	json.NewEncoder(w).Encode(response)
 }
@@ -56,7 +56,7 @@ func CreateResponse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx.Db.Create(&response)
+	ctx.DB.Create(&response)
 
 	w.WriteHeader(201)
 	w.Write([]byte(strconv.Itoa(int(response.ID))))
@@ -71,7 +71,7 @@ func UpdateResponse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx.Db.Save(&response)
+	ctx.DB.Save(&response)
 }
 
 func DeleteResponse(w http.ResponseWriter, r *http.Request) {
@@ -87,5 +87,5 @@ func DeleteResponse(w http.ResponseWriter, r *http.Request) {
 
 	response.ID = id
 
-	ctx.Db.Delete(&response)
+	ctx.DB.Delete(&response)
 }
