@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/vonji/vonji-api/models"
 	"github.com/vonji/vonji-api/api"
+	"github.com/jinzhu/gorm"
 )
 
 func GetRequests(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +64,7 @@ func CreateRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx.Db.Create(&request)
+	json.NewEncoder(w).Encode(models.User{ Model: gorm.Model { ID: request.ID } })
 }
 
 func UpdateRequest(w http.ResponseWriter, r *http.Request) {

@@ -9,6 +9,7 @@ import (
 
 	"github.com/vonji/vonji-api/api"
 	"github.com/vonji/vonji-api/models"
+	"github.com/jinzhu/gorm"
 )
 
 //TODO status code + all responses should be JSON
@@ -75,6 +76,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ctx.Db.Create(&user) //TODO check security
+	json.NewEncoder(w).Encode(models.User{ Model: gorm.Model { ID: user.ID } })
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
