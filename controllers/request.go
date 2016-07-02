@@ -65,6 +65,7 @@ func CreateRequest(w http.ResponseWriter, r *http.Request) {
 
 	ctx.Db.Create(&request)
 	json.NewEncoder(w).Encode(models.User{ Model: gorm.Model { ID: request.ID } })
+	w.WriteHeader(http.StatusCreated)
 }
 
 func UpdateRequest(w http.ResponseWriter, r *http.Request) {

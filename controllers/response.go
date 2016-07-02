@@ -57,6 +57,7 @@ func CreateResponse(w http.ResponseWriter, r *http.Request) {
 
 	ctx.Db.Create(&response)
 	json.NewEncoder(w).Encode(models.User{ Model: gorm.Model { ID: response.ID } })
+	w.WriteHeader(http.StatusCreated)
 }
 
 func UpdateResponse(w http.ResponseWriter, r *http.Request) {

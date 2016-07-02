@@ -77,6 +77,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	ctx.Db.Create(&user) //TODO check security
 	json.NewEncoder(w).Encode(models.User{ Model: gorm.Model { ID: user.ID } })
+	w.WriteHeader(http.StatusCreated)
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
