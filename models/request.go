@@ -7,4 +7,5 @@ type Request struct {
 	Post
 	Title string
 	Responses []Response
+	Views uint
 }

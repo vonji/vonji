@@ -42,6 +42,11 @@ func (ctrl RequestController) GetOne(id uint) (interface{}, *utils.HttpError) {
 		ctrl.GetDB().Model(&response).Related(&request.Responses[i].User)
 	}
 
+	go (func() {
+		request.Views++
+		ctrl.GetDB().Save(&request)
+	})()
+
 	return request, nil
 }
 
