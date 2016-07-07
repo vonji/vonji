@@ -1,90 +1,70 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"github.com/vonji/vonji-api/models"
-	"github.com/vonji/vonji-api/api"
-	"github.com/jinzhu/gorm"
+	"github.com/vonji/vonji-api/utils"
 )
 
-func GetResponse(w http.ResponseWriter, r *http.Request) {
-	ctx := api.GetContext()
+type ResponseController struct {
+	APIBaseController
+}
 
+func (ctrl ResponseController) GetAll() (interface{}, *utils.HttpError) {
 	responses := []models.Response{}
-	ctx.Db.Find(&responses)
+	ctrl.GetDB().Find(&responses)
 
 	for i, request := range responses {
-		ctx.Db.Model(&request).Related(&responses[i].User)
+		ctrl.GetDB().Model(&request).Related(&responses[i].User)
 	}
 
-	json.NewEncoder(w).Encode(responses)
+	return responses, nil
 }
 
-func GetResponseById(w http.ResponseWriter, r *http.Request) {
-	ctx := api.GetContext()
+func (ctrl ResponseController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	response := models.Response{}
 
-	id, err := parseUint(mux.Vars(r)["id"])
-
-	if err != nil {
-		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
-		return
+	ctrl.GetDB().First(&response, id)
+	if err := ctrl.CheckID(response.ID); err != nil {
+		return nil, err
 	}
 
-	ctx.Db.First(&response, id)
+	ctrl.GetDB().Model(&response).Related(&response.User)
 
-	if response.ID == 0 {
-		http.Error(w, fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound)
-		return
-	}
-
-	ctx.Db.Model(&response).Related(&response.User)
-
-	json.NewEncoder(w).Encode(response)
+	return response, nil
 }
 
-func CreateResponse(w http.ResponseWriter, r *http.Request) {
+func (ctrl ResponseController) Create(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
 	response := models.Response{}
-	ctx := api.GetContext()
 
 	if err := json.NewDecoder(r.Body).Decode(&response); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		return nil, &utils.HttpError{ err.Error(), http.StatusBadRequest }
 	}
 
-	ctx.Db.Create(&response)
-	json.NewEncoder(w).Encode(models.User{ Model: gorm.Model { ID: response.ID } })
-	w.WriteHeader(http.StatusCreated)
+	ctrl.GetDB().Create(&response)
+
+	return response, nil
 }
 
-func UpdateResponse(w http.ResponseWriter, r *http.Request) {
+func (ctrl ResponseController) Update(w http.ResponseWriter, r *http.Request) *utils.HttpError{
 	response := models.Response{}
-	ctx := api.GetContext()
 
 	if err := json.NewDecoder(r.Body).Decode(&response); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		return &utils.HttpError{ err.Error(), http.StatusBadRequest }
 	}
 
-	ctx.Db.Save(&response)
+	ctrl.GetDB().Save(&response)
+
+	return nil
 }
 
-func DeleteResponse(w http.ResponseWriter, r *http.Request) {
+func (ctrl ResponseController) Delete(id uint) *utils.HttpError {
 	response := models.Response{}
-	ctx := api.GetContext()
-
-	id, err := parseUint(mux.Vars(r)["id"])
-
-	if err != nil {
-		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
-		return
-	}
 
 	response.ID = id
 
-	ctx.Db.Delete(&response)
-}
+	ctrl.GetDB().Delete(&response)
 
+	return nil
+}

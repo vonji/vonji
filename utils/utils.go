@@ -1,8 +1,8 @@
-package controllers
+package utils
 
 import "strconv"
 
-func parseUint(s string) (uint, error) { //TODO move
+func ParseUint(s string) (uint, error) {
 	n, err := strconv.ParseUint(s, 10, 64)
 	return uint(n), err
 }

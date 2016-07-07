@@ -9,44 +9,36 @@ import (
 
 	"github.com/vonji/vonji-api/api"
 	"github.com/vonji/vonji-api/models"
-	"github.com/jinzhu/gorm"
+	"github.com/vonji/vonji-api/utils"
 )
 
-//TODO status code + all responses should be JSON
-
-func GetUsers(w http.ResponseWriter, r *http.Request) {
-	ctx := api.GetContext()
-
-	users := []models.User{}
-	ctx.Db.Find(&users)
-	for i, user := range users { //TODO There must be another way to do this
-		ctx.Db.Model(&user).Association("tags").Find(&users[i].Tags)
-	}
-
-	json.NewEncoder(w).Encode(users)
+type UserController struct {
+	APIBaseController
 }
 
-func GetUserById(w http.ResponseWriter, r *http.Request) {
-	ctx := api.GetContext()
+func (ctrl UserController) GetAll() (interface{}, *utils.HttpError) {
+	users := []models.User{}
+	ctrl.GetDB().Find(&users)
+
+	for i, user := range users {
+		ctrl.GetDB().Model(&user).Association("tags").Find(&users[i].Tags)
+	}
+
+	return users, nil
+}
+
+func (ctrl UserController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	user := models.User{}
 
-	id, err := parseUint(mux.Vars(r)["id"]) //TODO find shorter syntax
+	ctrl.GetDB().First(&user, id)
 
-	if err != nil {
-		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
-		return
+	if err := ctrl.CheckID(user.ID); err != nil {
+		return nil, err
 	}
 
-	ctx.Db.First(&user, id)
+	ctrl.GetDB().Model(&user).Association("tags").Find(&user.Tags)
 
-	if user.ID == 0 {
-		http.Error(w, fmt.Sprintf("No user with ID %d found", id), http.StatusNotFound)
-		return
-	}
-
-	ctx.Db.Model(&user).Association("tags").Find(&user.Tags)
-
-	json.NewEncoder(w).Encode(user)
+	return user, nil
 }
 
 func GetUserByEmail(w http.ResponseWriter, r *http.Request) {
@@ -55,55 +47,46 @@ func GetUserByEmail(w http.ResponseWriter, r *http.Request) {
 
 	user.Email = mux.Vars(r)["email"]
 
-	ctx.Db.Where(&user).First(&user)
+	ctx.DB.Where(&user).First(&user)
 
 	if user.ID == 0 {
 		http.Error(w, fmt.Sprintf("No user with email %s was found", user.Email), http.StatusNotFound)
 		return
 	}
 
-	ctx.Db.Model(&user).Association("tags").Find(&user.Tags)
+	ctx.DB.Model(&user).Association("tags").Find(&user.Tags)
 
 	json.NewEncoder(w).Encode(user)
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func (ctrl UserController) Create(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
 	user := models.User{}
-	ctx := api.GetContext()
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		return nil, &utils.HttpError{ err.Error(), http.StatusBadRequest }
 	}
-	ctx.Db.Create(&user) //TODO check security
-	json.NewEncoder(w).Encode(models.User{ Model: gorm.Model { ID: user.ID } })
-	w.WriteHeader(http.StatusCreated)
+
+	ctrl.GetDB().Create(&user)
+
+	return user, nil
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (ctrl UserController) Update(w http.ResponseWriter, r *http.Request) *utils.HttpError {
 	user := models.User{}
-	ctx := api.GetContext()
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+		return &utils.HttpError{ err.Error(), http.StatusBadRequest }
 	}
-	ctx.Db.Save(&user) //TODO check security
+	ctrl.GetDB().Save(&user)
+
+	return nil
 }
 
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (ctrl UserController) Delete(id uint) *utils.HttpError {
 	user := models.User{}
-	ctx := api.GetContext()
-
-	id, err := parseUint(mux.Vars(r)["id"]) //TODO find shorter syntax
-
-	if err != nil {
-		http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
-		return
-	}
 
 	user.ID = id
 
-	ctx.Db.Delete(&user) //Soft delete
-	//TODO return error if the id does not exist
+	ctrl.GetDB().Delete(&user)
+	return nil
 }
