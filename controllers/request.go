@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/vonji/vonji-api/api"
 	"github.com/vonji/vonji-api/models"
 	"github.com/vonji/vonji-api/utils"
 )
@@ -65,25 +64,23 @@ func (ctrl RequestController) Create(w http.ResponseWriter, r *http.Request) (in
 
 func (ctrl RequestController) Update(w http.ResponseWriter, r *http.Request) *utils.HttpError {
 	request := models.Request{}
-	ctx := api.GetContext()
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		return &utils.HttpError{ err.Error(), http.StatusBadRequest }
 	}
 
-	ctx.DB.Save(&request)
+	ctrl.GetDB().Save(&request)
 
 	return nil
 }
 
 func (ctrl RequestController) Delete(id uint) *utils.HttpError {
 	request := models.Request{}
-	ctx := api.GetContext()
 
 	request.ID = id
 
-	ctx.DB.Delete(&request)
-	ctx.DB.Where(&models.Response{RequestID: request.ID}).Delete(&models.Response{})
+	ctrl.GetDB().Delete(&request)
+	ctrl.GetDB().Where(&models.Response{RequestID: request.ID}).Delete(&models.Response{})
 
 	return nil
 }
