@@ -21,6 +21,10 @@ func (ctrl RequestController) GetAll() (interface{}, *utils.HttpError) {
 		ctrl.GetDB().Model(&request).Related(&requests[i].Responses)
 		for j, response := range requests[i].Responses {
 			ctrl.GetDB().Model(&response).Related(&requests[i].Responses[j].User)
+			ctrl.GetDB().Where(&models.Comment{ ResponseID: response.ID }).Find(&requests[i].Responses[j].Comments)
+			for k, comment := range requests[i].Responses[j].Comments {
+				ctrl.GetDB().Model(&comment).Related(&requests[i].Responses[j].Comments[k].User)
+			}
 		}
 	}
 
@@ -39,6 +43,14 @@ func (ctrl RequestController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	ctrl.GetDB().Model(&request).Related(&request.Responses)
 	for i, response := range request.Responses {
 		ctrl.GetDB().Model(&response).Related(&request.Responses[i].User)
+		ctrl.GetDB().Where(&models.Comment{ ResponseID: response.ID }).Find(&request.Responses[i].Comments)
+		for j, comment := range request.Responses[i].Comments {
+			ctrl.GetDB().Model(&comment).Related(&request.Responses[i].Comments[j].User)
+		}
+	}
+	ctrl.GetDB().Where(&models.Comment{ RequestID: request.ID }).Find(&request.Comments)
+	for i, comment := range request.Comments {
+		ctrl.GetDB().Model(&comment).Related(&request.Comments[i].User)
 	}
 
 	go (func() {

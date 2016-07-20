@@ -15,8 +15,12 @@ func (ctrl ResponseController) GetAll() (interface{}, *utils.HttpError) {
 	responses := []models.Response{}
 	ctrl.GetDB().Find(&responses)
 
-	for i, request := range responses {
-		ctrl.GetDB().Model(&request).Related(&responses[i].User)
+	for i, response := range responses {
+		ctrl.GetDB().Model(&response).Related(&responses[i].User)
+		ctrl.GetDB().Where(&models.Comment{ ResponseID: response.ID }).Find(&response.Comments)
+		for j, comment := range response.Comments {
+			ctrl.GetDB().Model(&comment).Related(&response.Comments[j].User)
+		}
 	}
 
 	return responses, nil
@@ -31,6 +35,10 @@ func (ctrl ResponseController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	}
 
 	ctrl.GetDB().Model(&response).Related(&response.User)
+	ctrl.GetDB().Where(&models.Comment{ ResponseID: response.ID }).Find(&response.Comments)
+	for i, comment := range response.Comments {
+		ctrl.GetDB().Model(&comment).Related(&response.Comments[i].User)
+	}
 
 	return response, nil
 }

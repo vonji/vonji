@@ -97,4 +97,11 @@ func RegisterRoutes(r *mux.Router) {
 	rs.Methods("POST").HandlerFunc(PostHandler(controllers.ResponseController{}))
 	rs.Methods("PUT").HandlerFunc(PutHandler(controllers.ResponseController{}))
 	rs.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.ResponseController{}))
+
+	rc := r.PathPrefix("/comments").Subrouter()
+	rc.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.CommentController{}))
+	rc.Methods("GET").HandlerFunc(GetAllHandler(controllers.CommentController{}))
+	rc.Methods("POST").HandlerFunc(PostHandler(controllers.CommentController{}))
+	rc.Methods("PUT").HandlerFunc(PutHandler(controllers.CommentController{}))
+	rc.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.CommentController{}))
 }

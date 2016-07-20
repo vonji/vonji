@@ -25,7 +25,7 @@ func main() {
 	db.LogMode(true)
 
 	defer db.Close()
-	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{})
+	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{})
 
 	if err != nil {
 		panic(err.Error())
