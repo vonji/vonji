@@ -66,7 +66,7 @@ func (ctrl RequestController) Create(w http.ResponseWriter, r *http.Request) (in
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
-		return nil, &utils.HttpError{ err.Error(), http.StatusBadRequest }
+		return nil, &utils.HttpError{ err.Error(), http.StatusBadRequest, "" }
 	}
 
 	ctrl.GetDB().Create(&request)
@@ -78,7 +78,7 @@ func (ctrl RequestController) Update(w http.ResponseWriter, r *http.Request) *ut
 	request := models.Request{}
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		return &utils.HttpError{ err.Error(), http.StatusBadRequest }
+		return &utils.HttpError{ err.Error(), http.StatusBadRequest, "" }
 	}
 
 	ctrl.GetDB().Save(&request)

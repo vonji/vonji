@@ -7,18 +7,37 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/vonji/vonji-api/controllers"
 	"github.com/vonji/vonji-api/utils"
+	"github.com/vonji/vonji-api/services"
 )
+
+func handleError(w http.ResponseWriter, error *utils.HttpError) {
+	http.Error(w, error.Error, error.Code)
+	println(services.Error.InternalError)
+}
+
+func checkError(w http.ResponseWriter, error *utils.HttpError) bool {
+	if services.Error != nil {
+		handleError(w, services.Error)
+		services.Error = nil
+		return true
+	}
+	if error != nil {
+		handleError(w, error)
+		return true
+	}
+	return false
+}
 
 var GetOneHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := utils.ParseUint(mux.Vars(r)["id"])
 		if err != nil {
-			http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
+			handleError(w, utils.BadRequest("Parameter ID is not an unsigned integer"))
 			return
 		}
 		obj, httpErr := ctrl.GetOne(id)
-		if httpErr != nil {
-			http.Error(w, httpErr.Error, httpErr.Code)
+
+		if checkError(w, httpErr) {
 			return
 		}
 		json.NewEncoder(w).Encode(obj)
@@ -28,10 +47,11 @@ var GetOneHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 var GetAllHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		obj, err := ctrl.GetAll()
-		if err != nil {
-			http.Error(w, err.Error, err.Code)
+
+		if checkError(w, err) {
 			return
 		}
+
 		json.NewEncoder(w).Encode(obj)
 	}
 }
@@ -39,10 +59,11 @@ var GetAllHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 var PostHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		obj, err := ctrl.Create(w, r)
-		if err != nil {
-			http.Error(w, err.Error, err.Code)
+
+		if checkError(w, err) {
 			return
 		}
+
 		json.NewEncoder(w).Encode(obj)
 		w.WriteHeader(http.StatusCreated)
 	}
@@ -50,10 +71,10 @@ var PostHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 
 var PutHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := ctrl.Update(w, r); err != nil {
-			http.Error(w, err.Error, err.Code)
+		if checkError(w, ctrl.Update(w, r)) {
 			return
 		}
+
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
@@ -61,15 +82,17 @@ var PutHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 var DeleteHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctrl := controllers.RequestController{}
+
 		id, err := utils.ParseUint(mux.Vars(r)["id"])
 		if err != nil {
-			http.Error(w, "Parameter ID is not an unsigned integer", http.StatusBadRequest)
+			handleError(w, utils.BadRequest("Parameter ID is not an unsigned integer"))
 			return
 		}
-		if err := ctrl.Delete(id); err != nil {
-			http.Error(w, err.Error, err.Code)
+
+		if checkError(w, ctrl.Delete(id)) {
 			return
 		}
+
 		w.WriteHeader(http.StatusNoContent)
 	}
 }

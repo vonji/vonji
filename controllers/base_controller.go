@@ -15,7 +15,7 @@ type APIBaseController struct {
 
 func (ctrl APIBaseController) CheckID(id uint) *utils.HttpError {
 	if id == 0 {
-		return &utils.HttpError{ fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound }
+		return &utils.HttpError{ fmt.Sprintf("No request with ID %d found", id), http.StatusNotFound, "" }
 	}
 	return nil
 }

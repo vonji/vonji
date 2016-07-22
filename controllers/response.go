@@ -47,7 +47,7 @@ func (ctrl ResponseController) Create(w http.ResponseWriter, r *http.Request) (i
 	response := models.Response{}
 
 	if err := json.NewDecoder(r.Body).Decode(&response); err != nil {
-		return nil, &utils.HttpError{ err.Error(), http.StatusBadRequest }
+		return nil, &utils.HttpError{ err.Error(), http.StatusBadRequest, "" }
 	}
 
 	ctrl.GetDB().Create(&response)
@@ -59,7 +59,7 @@ func (ctrl ResponseController) Update(w http.ResponseWriter, r *http.Request) *u
 	response := models.Response{}
 
 	if err := json.NewDecoder(r.Body).Decode(&response); err != nil {
-		return &utils.HttpError{ err.Error(), http.StatusBadRequest }
+		return &utils.HttpError{ err.Error(), http.StatusBadRequest, "" }
 	}
 
 	ctrl.GetDB().Save(&response)
