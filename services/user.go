@@ -16,14 +16,14 @@ func (service UserService) GetAll() []models.User {
 
 	users := []models.User{}
 
-	if err := service.GetDB().Find(&users); err.Error != nil {
-		Error = utils.DatabaseError(err)
+	if db := service.GetDB().Find(&users); db.Error != nil {
+		Error = utils.DatabaseError(db)
 		return nil
 	}
 
 	for i, user := range users {
-		if err := service.GetDB().Model(&user).Association("tags").Find(&users[i].Tags); err.Error != nil {
-			Error = utils.AssociationError(err)
+		if db := service.GetDB().Model(&user).Association("tags").Find(&users[i].Tags); db.Error != nil {
+			Error = utils.AssociationError(db)
 			return nil
 		}
 	}
@@ -38,13 +38,13 @@ func (service UserService) GetOne(id uint) models.User {
 
 	user := models.User{}
 
-	if err := service.GetDB().First(&user, id); err.Error != nil {
-		Error = utils.DatabaseError(err)
+	if db := service.GetDB().First(&user, id); db.Error != nil {
+		Error = utils.DatabaseError(db)
 		return models.User{}
 	}
 
-	if err := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); err.Error != nil {
-		Error = utils.AssociationError(err)
+	if db := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); db.Error != nil {
+		Error = utils.AssociationError(db)
 		return models.User{}
 	}
 
@@ -58,13 +58,13 @@ func (service UserService) GetOneByEmail(email string) models.User {
 
 	user := models.User{ Email: email }
 
-	if err := service.GetDB().Where(&user).First(&user); err.Error != nil {
-		Error = utils.DatabaseError(err)
+	if db := service.GetDB().Where(&user).First(&user); db.Error != nil {
+		Error = utils.DatabaseError(db)
 		return models.User{}
 	}
 
-	if err := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); err.Error != nil {
-		Error = utils.AssociationError(err)
+	if db := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); db.Error != nil {
+		Error = utils.AssociationError(db)
 		return models.User{}
 	}
 
@@ -76,8 +76,8 @@ func (service UserService) Create(user models.User) {
 		return
 	}
 
-	if err := service.GetDB().Create(&user); err.Error != nil {
-		Error = utils.DatabaseError(err)
+	if db := service.GetDB().Create(&user); db.Error != nil {
+		Error = utils.DatabaseError(db)
 		return
 	}
 }
@@ -88,8 +88,8 @@ func (service UserService) Update(user models.User) {
 		return
 	}
 
-	if err := service.GetDB().Save(&user); err != nil {
-		Error = utils.DatabaseError(err)
+	if db := service.GetDB().Save(&user); db.Error != nil {
+		Error = utils.DatabaseError(db)
 	}
 }
 
@@ -101,7 +101,7 @@ func (service UserService) Delete(id uint) {
 	user := models.User{}
 	user.ID = id
 
-	if err := service.GetDB().Delete(&user); err != nil {
-		Error = utils.DatabaseError(err)
+	if db := service.GetDB().Delete(&user); db.Error != nil {
+		Error = utils.DatabaseError(db)
 	}
 }
