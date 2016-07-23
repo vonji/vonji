@@ -71,15 +71,17 @@ func (service UserService) GetOneByEmail(email string) models.User {
 	return user
 }
 
-func (service UserService) Create(user models.User) {
+func (service UserService) Create(user models.User) *models.User{
 	if Error != nil {
-		return
+		return nil
 	}
 
 	if db := service.GetDB().Create(&user); db.Error != nil {
 		Error = utils.DatabaseError(db)
-		return
+		return nil
 	}
+
+	return User.GetOne(user.ID)
 }
 
 
