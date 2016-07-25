@@ -31,47 +31,47 @@ func (service UserService) GetAll() []models.User {
 	return users
 }
 
-func (service UserService) GetOne(id uint) models.User {
+func (service UserService) GetOne(id uint) *models.User {
 	if Error != nil {
-		return models.User{}
+		return nil
 	}
 
 	user := models.User{}
 
 	if db := service.GetDB().First(&user, id); db.Error != nil {
 		Error = utils.DatabaseError(db)
-		return models.User{}
+		return nil
 	}
 
 	if db := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); db.Error != nil {
 		Error = utils.AssociationError(db)
-		return models.User{}
+		return nil
 	}
 
-	return user
+	return &user
 }
 
-func (service UserService) GetOneByEmail(email string) models.User {
+func (service UserService) GetOneByEmail(email string) *models.User {
 	if Error != nil {
-		return models.User{}
+		return nil
 	}
 
 	user := models.User{ Email: email }
 
 	if db := service.GetDB().Where(&user).First(&user); db.Error != nil {
 		Error = utils.DatabaseError(db)
-		return models.User{}
+		return nil
 	}
 
 	if db := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); db.Error != nil {
 		Error = utils.AssociationError(db)
-		return models.User{}
+		return nil
 	}
 
-	return user
+	return &user
 }
 
-func (service UserService) Create(user models.User) *models.User{
+func (service UserService) Create(user *models.User) *models.User{
 	if Error != nil {
 		return nil
 	}
@@ -85,7 +85,7 @@ func (service UserService) Create(user models.User) *models.User{
 }
 
 
-func (service UserService) Update(user models.User) {
+func (service UserService) Update(user *models.User) {
 	if Error != nil {
 		return
 	}

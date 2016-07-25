@@ -41,7 +41,7 @@ func (ctrl UserController) Create(w http.ResponseWriter, r *http.Request) (inter
 		return nil, utils.BadRequest(err.Error())
 	}
 
-	return services.User.Create(user), nil
+	return services.User.Create(&user), nil
 }
 
 func (ctrl UserController) Update(w http.ResponseWriter, r *http.Request) *utils.HttpError {
@@ -51,7 +51,7 @@ func (ctrl UserController) Update(w http.ResponseWriter, r *http.Request) *utils
 		return utils.BadRequest(err.Error())
 	}
 
-	services.User.Update(user)
+	services.User.Update(&user)
 
 	return nil
 }
