@@ -25,33 +25,26 @@ func (ctrl CommentController) Create(w http.ResponseWriter, r *http.Request) (in
 	comment := models.Comment{}
 
 	if err := json.NewDecoder(r.Body).Decode(&comment); err != nil {
-		return nil, &utils.HttpError{ err.Error(), http.StatusBadRequest, "" }
+		return nil, utils.BadRequest(err.Error())
 	}
 
-	ctrl.GetDB().Create(&comment)
-
-	return comment, nil
+	return services.Comment.Create(&comment), nil
 }
 
 func (ctrl CommentController) Update(w http.ResponseWriter, r *http.Request) *utils.HttpError {
 	comment := models.Comment{}
 
 	if err := json.NewDecoder(r.Body).Decode(&comment); err != nil {
-		return &utils.HttpError{ err.Error(), http.StatusBadRequest, "" }
+		return utils.BadRequest(err.Error())
 	}
 
-	ctrl.GetDB().Save(&comment)
+	services.Comment.Update(&comment)
 
 	return nil
 }
 
 func (ctrl CommentController) Delete(id uint) *utils.HttpError {
-	comment := models.Comment{}
-
-	comment.ID = id
-
-	ctrl.GetDB().Delete(&comment)
-	ctrl.GetDB().Where(&models.Response{RequestID: comment.ID}).Delete(&models.Response{})
+	services.Comment.Delete(id)
 
 	return nil
 }

@@ -15,43 +15,107 @@ func (service CommentService) GetAll() []models.Comment {
 	}
 
 	comments := []models.Comment{}
-	service.GetDB().Find(&comments)
+
+	if db:= service.GetDB().Find(&comments); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
+	}
 
 	for i, comment := range comments {
-		comments[i].User = User.GetOne(comment.UserID)
+		comments[i].User = *User.GetOne(comment.UserID)
 	}
 
 	return comments
 }
 
-func (service CommentService) GetOne(id uint) models.Comment {
+func (service CommentService) GetOne(id uint) *models.Comment {
 	if Error != nil {
-		return models.Comment{}
+		return nil
 	}
 
 	comment := models.Comment{}
 
-	if err := service.GetDB().First(&comment, id); err.Error != nil {
-		Error = utils.DatabaseError(err)
-		return models.Comment{}
+	if db := service.GetDB().First(&comment, id); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
 	}
 
-	comment.User = User.GetOne(comment.UserID)
+	comment.User = *User.GetOne(comment.UserID)
+
+	return &comment
+}
+
+func (service CommentService) GetOneWhere(comment *models.Comment) *models.Comment {
+	if Error != nil {
+		return nil
+	}
+
+	if db := service.GetDB().Where(&comment).First(&comment); db.Error != nil {
+		if !db.RecordNotFound() {
+			Error = utils.DatabaseError(db)
+		}
+		return nil
+	}
+
+	comment.User = *User.GetOne(comment.UserID)
 
 	return comment
 }
 
-func (service CommentService) GetOneWhere(comment *models.Comment) models.Comment {
+func (service CommentService) GetAllWhere(comment *models.Comment) []models.Comment {
 	if Error != nil {
-		return models.Comment{}
+		return nil
 	}
 
-	if err := service.GetDB().Where(&comment).First(&comment); err.Error != nil {
-		Error = utils.DatabaseError(err)
-		return models.Comment{}
+	comments := []models.Comment{}
+
+	if db := service.GetDB().Where(&comment).Find(&comment); db.Error != nil {
+		if !db.RecordNotFound() {
+			Error = utils.DatabaseError(db)
+		}
+		return nil
 	}
 
-	comment.User = User.GetOne(comment.UserID)
+	for i := range comments {
+		comments[i].User = *User.GetOne(comments[i].UserID)
+	}
 
-	return *comment
+	return comments
+}
+
+func (service CommentService) Create(comment *models.Comment) *models.Comment {
+	if Error != nil {
+		return nil
+	}
+
+	if db := service.GetDB().Create(&comment); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
+	}
+
+	return Comment.GetOne(comment.ID)
+}
+
+func (service CommentService) Update(comment *models.Comment) {
+	if Error != nil {
+		return
+	}
+
+	if db := service.GetDB().Update(&comment); db.Error != nil {
+		Error = utils.DatabaseError(db)
+	}
+}
+
+func (service CommentService) Delete(id uint) {
+	if Error != nil {
+		return
+	}
+
+	comment := models.Comment{}
+	comment.ID = id
+
+	if db := service.GetDB().Delete(&comment); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return
+	}
 }

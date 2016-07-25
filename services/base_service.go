@@ -12,6 +12,8 @@ type BaseService struct {
 var Error *utils.HttpError
 var User UserService = UserService{}
 var Comment CommentService = CommentService{}
+var Response ResponseService = ResponseService{}
+var Request RequestService = RequestService{}
 
 func (service BaseService) GetDB() *gorm.DB {
 	return api.GetContext().DB
