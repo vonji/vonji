@@ -81,8 +81,6 @@ var PutHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 
 var DeleteHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctrl := controllers.RequestController{}
-
 		id, err := utils.ParseUint(mux.Vars(r)["id"])
 		if err != nil {
 			handleError(w, utils.BadRequest("Parameter ID is not an unsigned integer"))
