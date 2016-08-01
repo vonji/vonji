@@ -59,7 +59,7 @@ func initDB(db *gorm.DB) {
 			Password: "admin",
 			FirstName: "Admin",
 			LastName: "Admin",
-			Description: "THE ALMGIGHTY ONE",
+			Description: "THE ALMIGHTY ONE",
 		})
 	}
 }
