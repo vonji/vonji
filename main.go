@@ -57,9 +57,13 @@ func initDB(db *gorm.DB) {
 		services.User.Create(&models.User{
 			Email: "admin@vonji.fr",
 			Password: "admin",
-			FirstName: "Admin",
-			LastName: "Admin",
+			DisplayedName: "Admin",
+			RealName: "Admin",
 			Description: "THE ALMIGHTY ONE",
+			Motto: "The Banhammer shall strike the unholy",
+			VAction: 99999,
+			VCoins: 777777,
+			Location: "Ring0",
 		})
 	}
 }
