@@ -8,4 +8,5 @@ type Request struct {
 	Title string
 	Responses []Response
 	Views uint
+	Tags          []Tag `gorm:"many2many:request_tags;"`
 }

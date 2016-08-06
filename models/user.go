@@ -20,5 +20,5 @@ type User struct {
 	VAction       int
 	Avatar        string
 	Gender	      string
-	Tags          []Tag `gorm:"many2many:user_tags;"` //todo probalement un score par tag
+	Tags          []Tag `gorm:"many2many:user_tags;"`
 }

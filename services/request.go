@@ -25,6 +25,10 @@ func (service RequestService) GetAll() []models.Request {
 		requests[i].User = *User.GetOne(request.UserID)
 		requests[i].Responses = Response.GetAllWhere(&models.Response{ RequestID: request.ID })
 		requests[i].Comments = Comment.GetAllWhere(&models.Comment{ RequestID: request.ID })
+		if db := service.GetDB().Model(&request).Association("tags").Find(&requests[i].Tags); db.Error != nil {
+			Error = utils.AssociationError(db)
+			return nil
+		}
 	}
 
 	return requests
@@ -45,6 +49,10 @@ func (service RequestService) GetOne(id uint) *models.Request {
 	request.User = *User.GetOne(request.UserID)
 	request.Responses = Response.GetAllWhere(&models.Response{ RequestID: id })
 	request.Comments = Comment.GetAllWhere(&models.Comment{ RequestID: id })
+	if db := service.GetDB().Model(&request).Association("tags").Find(&request.Tags); db.Error != nil {
+		Error = utils.AssociationError(db)
+		return nil
+	}
 
 	go (func() {
 		request.Views++
@@ -61,6 +69,7 @@ func (service RequestService) Create(request *models.Request) *models.Request {
 		return nil
 	}
 
+	request.Tags = Tag.GetOrCreate(request.Tags)
 	if db := service.GetDB().Create(&request); db.Error != nil {
 		Error = utils.DatabaseError(db)
 		return nil
@@ -74,6 +83,7 @@ func (service RequestService) Update(request *models.Request) {
 		return
 	}
 
+	request.Tags = Tag.GetOrCreate(request.Tags)
 	if db := service.GetDB().Save(&request); db.Error != nil {
 		Error = utils.DatabaseError(db)
 	}
