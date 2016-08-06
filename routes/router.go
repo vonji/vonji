@@ -125,4 +125,11 @@ func RegisterRoutes(r *mux.Router) {
 	rc.Methods("POST").HandlerFunc(PostHandler(controllers.CommentController{}))
 	rc.Methods("PUT").HandlerFunc(PutHandler(controllers.CommentController{}))
 	rc.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.CommentController{}))
+
+	rt := r.PathPrefix("/tags").Subrouter()
+	rt.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.TagController{}))
+	rt.Methods("GET").HandlerFunc(GetAllHandler(controllers.TagController{}))
+	rt.Methods("POST").HandlerFunc(PostHandler(controllers.TagController{}))
+	rt.Methods("PUT").HandlerFunc(PutHandler(controllers.TagController{}))
+	rt.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.TagController{}))
 }
