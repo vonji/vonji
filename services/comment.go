@@ -69,7 +69,7 @@ func (service CommentService) GetAllWhere(comment *models.Comment) []models.Comm
 
 	comments := []models.Comment{}
 
-	if db := service.GetDB().Where(&comment).Find(&comment); db.Error != nil {
+	if db := service.GetDB().Where(comment).Find(&comments); db.Error != nil {
 		if !db.RecordNotFound() {
 			Error = utils.DatabaseError(db)
 		}
