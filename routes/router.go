@@ -12,7 +12,7 @@ import (
 
 func handleError(w http.ResponseWriter, error *utils.HttpError) {
 	http.Error(w, error.Error, error.Code)
-	println(services.Error.InternalError)
+	println(error.InternalError)
 }
 
 func checkError(w http.ResponseWriter, error *utils.HttpError) bool {
