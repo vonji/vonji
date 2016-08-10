@@ -7,6 +7,7 @@ import (
 	"github.com/vonji/vonji-api/models"
 	"github.com/vonji/vonji-api/utils"
 	"github.com/vonji/vonji-api/services"
+	"github.com/gorilla/mux"
 )
 
 type CommentController struct {
@@ -19,6 +20,26 @@ func (ctrl CommentController) GetAll() (interface{}, *utils.HttpError) {
 
 func (ctrl CommentController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	return services.Comment.GetOne(id), nil
+}
+
+func (ctrl CommentController) GetOneWhere(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
+	comment := models.Comment{}
+
+	if err := json.Unmarshal([]byte(mux.Vars(r)["condition"]), &comment); err != nil {
+		return nil, utils.BadRequest(err.Error())
+	}
+
+	return *services.Comment.GetOneWhere(&comment), nil
+}
+
+func (ctrl CommentController) GetAllWhere(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
+	comment := models.Comment{}
+
+	if err := json.Unmarshal([]byte(mux.Vars(r)["condition"]), &comment); err != nil {
+		return nil, utils.BadRequest(err.Error())
+	}
+
+	return services.Comment.GetAllWhere(&comment), nil
 }
 
 func (ctrl CommentController) Create(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {

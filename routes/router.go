@@ -44,6 +44,18 @@ var GetOneHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	}
 }
 
+var GetOneWhereHandler = func(ctrl controllers.APIController) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		obj, httpErr := ctrl.GetOneWhere(w, r)
+
+		if checkError(w, httpErr) {
+			return
+		}
+		json.NewEncoder(w).Encode(obj)
+	}
+}
+
 var GetAllHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		obj, err := ctrl.GetAll()
@@ -52,6 +64,18 @@ var GetAllHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 			return
 		}
 
+		json.NewEncoder(w).Encode(obj)
+	}
+}
+
+var GetAllWhereHandler = func(ctrl controllers.APIController) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		obj, httpErr := ctrl.GetAllWhere(w, r)
+
+		if checkError(w, httpErr) {
+			return
+		}
 		json.NewEncoder(w).Encode(obj)
 	}
 }
@@ -98,14 +122,17 @@ var DeleteHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 //The order is important
 func RegisterRoutes(r *mux.Router) {
 	ru := r.PathPrefix("/users").Subrouter()
+	ru.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.UserController{}))
+	ru.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.UserController{}))
 	ru.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.UserController{}))
-	ru.Methods("GET").PathPrefix("/{email}").HandlerFunc(controllers.GetUserByEmail)
 	ru.Methods("GET").HandlerFunc(GetAllHandler(controllers.UserController{}))
 	ru.Methods("POST").HandlerFunc(PostHandler(controllers.UserController{}))
 	ru.Methods("PUT").HandlerFunc(PutHandler(controllers.UserController{}))
 	ru.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.UserController{}))
 
 	rq := r.PathPrefix("/requests").Subrouter()
+	rq.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.RequestController{}))
+	rq.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.RequestController{}))
 	rq.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.RequestController{}))
 	rq.Methods("GET").HandlerFunc(GetAllHandler(controllers.RequestController{}))
 	rq.Methods("POST").HandlerFunc(PostHandler(controllers.RequestController{}))
@@ -113,6 +140,8 @@ func RegisterRoutes(r *mux.Router) {
 	rq.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.RequestController{}))
 
 	rs := r.PathPrefix("/responses").Subrouter()
+	rs.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.ResponseController{}))
+	rs.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.ResponseController{}))
 	rs.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.ResponseController{}))
 	rs.Methods("GET").HandlerFunc(GetAllHandler(controllers.ResponseController{}))
 	rs.Methods("POST").HandlerFunc(PostHandler(controllers.ResponseController{}))
@@ -120,6 +149,8 @@ func RegisterRoutes(r *mux.Router) {
 	rs.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.ResponseController{}))
 
 	rc := r.PathPrefix("/comments").Subrouter()
+	rc.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.CommentController{}))
+	rc.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.CommentController{}))
 	rc.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.CommentController{}))
 	rc.Methods("GET").HandlerFunc(GetAllHandler(controllers.CommentController{}))
 	rc.Methods("POST").HandlerFunc(PostHandler(controllers.CommentController{}))
@@ -127,6 +158,8 @@ func RegisterRoutes(r *mux.Router) {
 	rc.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.CommentController{}))
 
 	rt := r.PathPrefix("/tags").Subrouter()
+	rt.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.TagController{}))
+	rt.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.TagController{}))
 	rt.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.TagController{}))
 	rt.Methods("GET").HandlerFunc(GetAllHandler(controllers.TagController{}))
 	rt.Methods("POST").HandlerFunc(PostHandler(controllers.TagController{}))

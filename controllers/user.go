@@ -23,15 +23,24 @@ func (ctrl UserController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	return services.User.GetOne(id), nil
 }
 
-func GetUserByEmail(w http.ResponseWriter, r *http.Request) {
-	user := services.User.GetOneByEmail(mux.Vars(r)["email"])
+func (ctrl UserController) GetOneWhere(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
+	user := models.User{}
 
-	if (services.Error != nil) {
-		http.Error(w, services.Error.Error, services.Error.Code)
-		services.Error = nil
-		return
+	if err := json.Unmarshal([]byte(mux.Vars(r)["condition"]), &user); err != nil {
+		return nil, utils.BadRequest(err.Error())
 	}
-	json.NewEncoder(w).Encode(user)
+
+	return *services.User.GetOneWhere(&user), nil
+}
+
+func (ctrl UserController) GetAllWhere(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
+	user := models.User{}
+
+	if err := json.Unmarshal([]byte(mux.Vars(r)["condition"]), &user); err != nil {
+		return nil, utils.BadRequest(err.Error())
+	}
+
+	return services.User.GetAllWhere(&user), nil
 }
 
 func (ctrl UserController) Create(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {

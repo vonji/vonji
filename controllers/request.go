@@ -7,6 +7,7 @@ import (
 	"github.com/vonji/vonji-api/models"
 	"github.com/vonji/vonji-api/utils"
 	"github.com/vonji/vonji-api/services"
+	"github.com/gorilla/mux"
 )
 
 type RequestController struct {
@@ -28,6 +29,26 @@ func (ctrl RequestController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	}
 
 	return request, nil
+}
+
+func (ctrl RequestController) GetOneWhere(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
+	request := models.Request{}
+
+	if err := json.Unmarshal([]byte(mux.Vars(r)["condition"]), &request); err != nil {
+		return nil, utils.BadRequest(err.Error())
+	}
+
+	return *services.Request.GetOneWhere(&request), nil
+}
+
+func (ctrl RequestController) GetAllWhere(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
+	request := models.Request{}
+
+	if err := json.Unmarshal([]byte(mux.Vars(r)["condition"]), &request); err != nil {
+		return nil, utils.BadRequest(err.Error())
+	}
+
+	return services.Request.GetAllWhere(&request), nil
 }
 
 func (ctrl RequestController) Create(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {

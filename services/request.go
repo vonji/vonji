@@ -64,6 +64,59 @@ func (service RequestService) GetOne(id uint) *models.Request {
 	return &request
 }
 
+func (service RequestService) GetOneWhere(request *models.Request) *models.Request {
+	if Error != nil {
+		return nil
+	}
+
+	if db:= service.GetDB().Where(&request).First(&request); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
+	}
+
+	request.User = *User.GetOne(request.UserID)
+	request.Responses = Response.GetAllWhere(&models.Response{ RequestID: request.ID })
+	request.Comments = Comment.GetAllWhere(&models.Comment{ RequestID: request.ID })
+	if db := service.GetDB().Model(&request).Association("tags").Find(&request.Tags); db.Error != nil {
+		Error = utils.AssociationError(db)
+		return nil
+	}
+
+	go (func() {
+		request.Views++
+		if db := service.GetDB().Save(&request); db.Error != nil {
+			println(utils.DatabaseError(db).InternalError)
+		}
+	})()
+
+	return request
+}
+
+func (service RequestService) GetAllWhere(request *models.Request) []models.Request {
+	if Error != nil {
+		return nil
+	}
+
+	requests := []models.Request{}
+
+	if db := service.GetDB().Where(&request).Find(&requests); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
+	}
+
+	for i, request := range requests {
+		requests[i].User = *User.GetOne(request.UserID)
+		requests[i].Responses = Response.GetAllWhere(&models.Response{ RequestID: request.ID })
+		requests[i].Comments = Comment.GetAllWhere(&models.Comment{ RequestID: request.ID })
+		if db := service.GetDB().Model(&request).Association("tags").Find(&requests[i].Tags); db.Error != nil {
+			Error = utils.AssociationError(db)
+			return nil
+		}
+	}
+
+	return requests
+}
+
 func (service RequestService) Create(request *models.Request) *models.Request {
 	if Error != nil {
 		return nil

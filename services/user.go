@@ -71,7 +71,47 @@ func (service UserService) GetOneByEmail(email string) *models.User {
 	return &user
 }
 
-func (service UserService) Create(user *models.User) *models.User{
+func (service UserService) GetOneWhere(user *models.User) *models.User {
+	if Error != nil {
+		return nil
+	}
+
+	if db := service.GetDB().Where(&user).First(&user); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
+	}
+
+	if db := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); db.Error != nil {
+		Error = utils.AssociationError(db)
+		return nil
+	}
+
+	return user
+}
+
+func (service UserService) GetAllWhere(user *models.User) []models.User {
+	if Error != nil {
+		return nil
+	}
+
+	users := []models.User{}
+
+	if db := service.GetDB().Where(&user).Find(&users); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
+	}
+
+	for i, user := range users {
+		if db := service.GetDB().Model(&user).Association("tags").Find(&users[i].Tags); db.Error != nil {
+			Error = utils.AssociationError(db)
+			return nil
+		}
+	}
+
+	return users
+}
+
+func (service UserService) Create(user *models.User) *models.User {
 	if Error != nil {
 		return nil
 	}
@@ -83,7 +123,6 @@ func (service UserService) Create(user *models.User) *models.User{
 
 	return User.GetOne(user.ID)
 }
-
 
 func (service UserService) Update(user *models.User) {
 	if Error != nil {

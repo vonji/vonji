@@ -61,9 +61,11 @@ func initDB(db *gorm.DB) {
 			RealName: "Admin",
 			Description: "THE ALMIGHTY ONE",
 			Motto: "The Banhammer shall strike the unholy",
-			VAction: 99999,
-			VCoins: 777777,
+			VAction: 9999,
+			VCoins: 7777,
 			Location: "Ring0",
+			Avatar: "https://i.imgur.com/2WHymdi.jpg",
+			Gender: "other",
 		})
 	}
 }
