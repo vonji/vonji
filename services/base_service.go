@@ -15,6 +15,7 @@ var Comment CommentService = CommentService{}
 var Response ResponseService = ResponseService{}
 var Request RequestService = RequestService{}
 var Tag TagService = TagService{}
+var Transaction TransactionService = TransactionService{}
 
 func (service BaseService) GetDB() *gorm.DB {
 	return api.GetContext().DB

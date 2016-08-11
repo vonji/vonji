@@ -165,4 +165,13 @@ func RegisterRoutes(r *mux.Router) {
 	rt.Methods("POST").HandlerFunc(PostHandler(controllers.TagController{}))
 	rt.Methods("PUT").HandlerFunc(PutHandler(controllers.TagController{}))
 	rt.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.TagController{}))
+
+	rtr := r.PathPrefix("/transactions").Subrouter()
+	rtr.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.TransactionController{}))
+	rtr.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.TransactionController{}))
+	rtr.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.TransactionController{}))
+	rtr.Methods("GET").HandlerFunc(GetAllHandler(controllers.TransactionController{}))
+	rtr.Methods("POST").HandlerFunc(PostHandler(controllers.TransactionController{}))
+	rtr.Methods("PUT").HandlerFunc(PutHandler(controllers.TransactionController{}))
+	rtr.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.TransactionController{}))
 }

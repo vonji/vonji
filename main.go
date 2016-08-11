@@ -21,7 +21,7 @@ import (
 
 //TODO dependecy injection?
 func main() {
-	db, err := gorm.Open("postgres", "user=api password=NOT0 dbname=vonji sslmode=disable")
+	db, err := gorm.Open("postgres", "host=localhost user=api password=NOT0 dbname=vonji sslmode=disable")
 
 	db.LogMode(true)
 
@@ -52,7 +52,7 @@ func main() {
 }
 
 func initDB(db *gorm.DB) {
-	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{})
+	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{}, &models.Transaction{})
 	if len(services.User.GetAll()) == 0 {
 		services.User.Create(&models.User{
 			Email: "admin@vonji.fr",
