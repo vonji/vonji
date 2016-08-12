@@ -30,7 +30,7 @@ func (ctrl UserController) GetOneWhere(w http.ResponseWriter, r *http.Request) (
 		return nil, utils.BadRequest(err.Error())
 	}
 
-	return *services.User.GetOneWhere(&user), nil
+	return services.User.GetOneWhere(&user), nil
 }
 
 func (ctrl UserController) GetAllWhere(w http.ResponseWriter, r *http.Request) (interface{}, *utils.HttpError) {
