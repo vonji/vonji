@@ -6,6 +6,7 @@ type Response struct {
 	gorm.Model
 	Post
 	RequestID uint
-	Value uint
-	Accepted bool
+	Value     uint
+	Accepted  bool
+	Rating    uint
 }

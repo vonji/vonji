@@ -5,8 +5,9 @@ import "github.com/jinzhu/gorm"
 type Request struct {
 	gorm.Model
 	Post
-	Title string
+	Title     string
 	Responses []Response
-	Views uint
-	Tags          []Tag `gorm:"many2many:request_tags;"`
+	Views     uint
+	Tags      []Tag `gorm:"many2many:request_tags;"`
+	Archived  bool
 }
