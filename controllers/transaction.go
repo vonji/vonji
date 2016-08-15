@@ -56,7 +56,7 @@ func (ctrl TransactionController) Create(w http.ResponseWriter, r *http.Request)
 	if transaction.Type == "VACTION" {
 		transaction.To.VAction += transaction.Amount
 		services.User.Update(&transaction.To)
-	} else if transaction.Type == "VCOINS" {
+	} else if transaction.Type == "VCOIN" {
 		transaction.From.VCoins -= transaction.Amount//TODO check if enough coins
 		transaction.To.VCoins += transaction.Amount
 		services.User.Update(&transaction.From)
