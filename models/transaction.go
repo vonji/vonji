@@ -11,5 +11,5 @@ type Transaction struct {
 	Reason string
 	Source string
 	Type string// VCOIN | VACTION
-	Amount uint
+	Amount int
 }
