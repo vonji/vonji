@@ -51,26 +51,6 @@ func (service UserService) GetOne(id uint) *models.User {
 	return &user
 }
 
-func (service UserService) GetOneByEmail(email string) *models.User {
-	if Error != nil {
-		return nil
-	}
-
-	user := models.User{ Email: email }
-
-	if db := service.GetDB().Where(&user).First(&user); db.Error != nil {
-		Error = utils.DatabaseError(db)
-		return nil
-	}
-
-	if db := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); db.Error != nil {
-		Error = utils.AssociationError(db)
-		return nil
-	}
-
-	return &user
-}
-
 func (service UserService) GetOneWhere(user *models.User) *models.User {
 	if Error != nil {
 		return nil
