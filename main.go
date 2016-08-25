@@ -52,7 +52,7 @@ func main() {
 }
 
 func initDB(db *gorm.DB) {
-	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{}, &models.Transaction{})
+	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{}, &models.Transaction{}, &models.Achievement{})
 	if len(services.User.GetAll()) == 0 {
 		services.User.Create(&models.User{
 			Email: "admin@vonji.fr",

@@ -10,6 +10,8 @@ type BaseService struct {
 }
 
 var Error *utils.HttpError
+
+var Achievement AchievementService = AchievementService{}
 var User UserService = UserService{}
 var Comment CommentService = CommentService{}
 var Response ResponseService = ResponseService{}

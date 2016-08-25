@@ -174,4 +174,13 @@ func RegisterRoutes(r *mux.Router) {
 	rtr.Methods("POST").HandlerFunc(PostHandler(controllers.TransactionController{}))
 	rtr.Methods("PUT").HandlerFunc(PutHandler(controllers.TransactionController{}))
 	rtr.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.TransactionController{}))
+
+	ra := r.PathPrefix("/achievements").Subrouter()
+	ra.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.AchievementController{}))
+	ra.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.AchievementController{}))
+	ra.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.AchievementController{}))
+	ra.Methods("GET").HandlerFunc(GetAllHandler(controllers.AchievementController{}))
+	ra.Methods("POST").HandlerFunc(PostHandler(controllers.AchievementController{}))
+	ra.Methods("PUT").HandlerFunc(PutHandler(controllers.AchievementController{}))
+	ra.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.AchievementController{}))
 }

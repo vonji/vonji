@@ -48,6 +48,11 @@ func (service UserService) GetOne(id uint) *models.User {
 		return nil
 	}
 
+	if db := service.GetDB().Model(&user).Association("achievements").Find(&user.Achievements); db.Error != nil {
+		Error = utils.AssociationError(db)
+		return nil
+	}
+
 	return &user
 }
 
@@ -62,6 +67,11 @@ func (service UserService) GetOneWhere(user *models.User) *models.User {
 	}
 
 	if db := service.GetDB().Model(&user).Association("tags").Find(&user.Tags); db.Error != nil {
+		Error = utils.AssociationError(db)
+		return nil
+	}
+
+	if db := service.GetDB().Model(&user).Association("achievements").Find(&user.Achievements); db.Error != nil {
 		Error = utils.AssociationError(db)
 		return nil
 	}
@@ -83,6 +93,10 @@ func (service UserService) GetAllWhere(user *models.User) []models.User {
 
 	for i, user := range users {
 		if db := service.GetDB().Model(&user).Association("tags").Find(&users[i].Tags); db.Error != nil {
+			Error = utils.AssociationError(db)
+			return nil
+		}
+		if db := service.GetDB().Model(&user).Association("achievements").Find(&users[i].Achievements); db.Error != nil {
 			Error = utils.AssociationError(db)
 			return nil
 		}
