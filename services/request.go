@@ -34,6 +34,29 @@ func (service RequestService) GetAll() []models.Request {
 	return requests
 }
 
+func (service RequestService) Light() []models.Request {
+	if Error != nil {
+		return nil
+	}
+
+	requests := []models.Request{}
+
+	if db := service.GetDB().Find(&requests); db.Error != nil {
+		Error = utils.DatabaseError(db)
+		return nil
+	}
+
+	for i, request := range requests {
+		requests[i].User = *User.GetOne(request.UserID)
+		if db := service.GetDB().Model(&request).Association("tags").Find(&requests[i].Tags); db.Error != nil {
+			Error = utils.AssociationError(db)
+			return nil
+		}
+	}
+
+	return requests
+}
+
 func (service RequestService) GetOne(id uint) *models.Request {
 	if Error != nil {
 		return nil

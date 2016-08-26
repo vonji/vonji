@@ -119,6 +119,18 @@ var DeleteHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 	}
 }
 
+var LightHandler = func(ctrl controllers.RequestController) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		obj, err := ctrl.Light()
+
+		if checkError(w, err) {
+			return
+		}
+
+		json.NewEncoder(w).Encode(obj)
+	}
+}
+
 //The order is important
 func RegisterRoutes(r *mux.Router) {
 	ru := r.PathPrefix("/users").Subrouter()
@@ -131,6 +143,7 @@ func RegisterRoutes(r *mux.Router) {
 	ru.Methods("DELETE").PathPrefix("/{id:[0-9]+}").HandlerFunc(DeleteHandler(controllers.UserController{}))
 
 	rq := r.PathPrefix("/requests").Subrouter()
+	rq.Methods("GET").PathPrefix("/light").HandlerFunc(LightHandler(controllers.RequestController{}))
 	rq.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.RequestController{}))
 	rq.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.RequestController{}))
 	rq.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.RequestController{}))

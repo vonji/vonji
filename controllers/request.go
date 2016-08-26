@@ -18,6 +18,10 @@ func (ctrl RequestController) GetAll() (interface{}, *utils.HttpError) {
 	return services.Request.GetAll(), nil
 }
 
+func (ctrl RequestController) Light() (interface{}, *utils.HttpError) {
+	return services.Request.Light(), nil
+}
+
 func (ctrl RequestController) GetOne(id uint) (interface{}, *utils.HttpError) {
 	request := services.Request.GetOne(id)
 
