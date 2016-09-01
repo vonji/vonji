@@ -69,3 +69,7 @@ func (ctrl AchievementController) Delete(id uint) *utils.HttpError {
 
 	return nil
 }
+
+func Award(w http.ResponseWriter, r *http.Request) {
+	services.Achievement.Award()
+}

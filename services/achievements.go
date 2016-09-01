@@ -107,3 +107,43 @@ func (service AchievementService) Delete(id uint) {
 		return
 	}
 }
+
+var validation []func(*models.User, *models.Achievement) bool = []func(*models.User, *models.Achievement) bool {
+	func(user *models.User, achievement *models.Achievement) bool {
+		return false
+	},
+	func(user *models.User, achievement *models.Achievement) bool {
+		requests := Request.GetAllWhere(&models.Request{ Post: models.Post{ UserID: user.ID } })
+		return requests != nil && len(requests) >= achievement.CheckData
+	},
+}
+
+func (service AchievementService) Award() {
+	achievements := service.GetAll()
+	users := User.GetAll()
+
+	for _, achievement := range achievements {
+		if achievement.CheckID != 0 {
+			for _, user := range users {
+				if !lookatmeimsocoolidontevenneedfunctionalfunctions(user.Achievements, achievement.ID) && validation[achievement.CheckID](&user, &achievement) {
+					user.Achievements = append(user.Achievements, achievement)
+					user.VAction += achievement.Award
+					User.Update(&user)
+					Transaction.Create(&models.Transaction{ FromID: 1, ToID: user.ID, Type: "VACTION", Amount: achievement.Award, Reason: "Achievement award", Source: "/achievements" })
+				}
+				if Error != nil {
+					Error = nil
+				}
+			}
+		}
+	}
+}
+
+func lookatmeimsocoolidontevenneedfunctionalfunctions(achievements []models.Achievement, achievementID uint) bool {
+	for _, achievement := range achievements {
+		if achievement.ID == achievementID {
+			return true
+		}
+	}
+	return false
+}

@@ -191,6 +191,7 @@ func RegisterRoutes(r *mux.Router) {
 	ra := r.PathPrefix("/achievements").Subrouter()
 	ra.Methods("GET").PathPrefix("/where/all/{condition}").HandlerFunc(GetAllWhereHandler(controllers.AchievementController{}))
 	ra.Methods("GET").PathPrefix("/where/{condition}").HandlerFunc(GetOneWhereHandler(controllers.AchievementController{}))
+	ra.Methods("GET").PathPrefix("/award").HandlerFunc(controllers.Award)//TODO GET requests should not have side effect
 	ra.Methods("GET").PathPrefix("/{id:[0-9]+}").HandlerFunc(GetOneHandler(controllers.AchievementController{}))
 	ra.Methods("GET").HandlerFunc(GetAllHandler(controllers.AchievementController{}))
 	ra.Methods("POST").HandlerFunc(PostHandler(controllers.AchievementController{}))

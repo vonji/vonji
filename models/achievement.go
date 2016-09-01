@@ -4,7 +4,7 @@ import "github.com/jinzhu/gorm"
 
 type Achievement struct {
 	gorm.Model
-	Award uint
+	Award int
 	Name string
 	Description string
 	Category string
