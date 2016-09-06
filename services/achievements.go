@@ -16,7 +16,7 @@ func (service AchievementService) GetAll() []models.Achievement {
 
 	achievements := []models.Achievement{}
 
-	if db:= service.GetDB().Find(&achievements); db.Error != nil {
+	if db:= service.GetDB().Order("id asc").Find(&achievements); db.Error != nil {
 		Error = utils.DatabaseError(db)
 		return nil
 	}
@@ -61,7 +61,7 @@ func (service AchievementService) GetAllWhere(achievement *models.Achievement) [
 
 	achievements := []models.Achievement{}
 
-	if db := service.GetDB().Where(achievement).Find(&achievements); db.Error != nil {
+	if db := service.GetDB().Where(achievement).Order("id asc").Find(&achievements); db.Error != nil {
 		if !db.RecordNotFound() {
 			Error = utils.DatabaseError(db)
 		}
@@ -115,6 +115,24 @@ var validation []func(*models.User, *models.Achievement) bool = []func(*models.U
 	func(user *models.User, achievement *models.Achievement) bool {
 		requests := Request.GetAllWhere(&models.Request{ Post: models.Post{ UserID: user.ID } })
 		return requests != nil && len(requests) >= achievement.CheckData
+	},
+	func(user *models.User, achievement *models.Achievement) bool { //TODO: refactor when VON-96 is done
+		responses := []models.Request{}
+
+		if db := Achievement.GetDB().Where(&models.Response{ Post: models.Post{ UserID: user.ID } }).Not(&models.Response{ Rating: 0 }).Find(&responses); db.Error != nil {
+			Error = utils.DatabaseError(db)
+			return false
+		}
+		return true
+	},
+	func(user *models.User, achievement *models.Achievement) bool {
+		responses := Response.GetAllWhere(&models.Response{ Post: models.Post{ UserID: user.ID } })
+		return responses != nil && len(responses) >= achievement.CheckData
+	},
+	func(user *models.User, achievement *models.Achievement) bool {
+		/*requests := Request.GetAllWhere(&models.Request{ Post: models.Post{ UserID: user.ID } })
+		return requests != nil && len(requests) >= achievement.CheckData*/
+		return false
 	},
 }
 

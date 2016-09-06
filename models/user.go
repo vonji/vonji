@@ -21,5 +21,5 @@ type User struct {
 	Avatar        string
 	Gender	      string
 	Achievements  []Achievement `gorm:"many2many:user_achievements;"`
-	Tags          []Tag `gorm:"many2many:user_tags;"`//todo delete
+	Tags          []Tag `gorm:"many2many:user_tags;"`
 }
