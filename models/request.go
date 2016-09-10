@@ -9,5 +9,5 @@ type Request struct {
 	Responses []Response
 	Views     uint
 	Tags      []Tag `gorm:"many2many:request_tags;"`
-	Archived  bool
+	Status     string
 }
