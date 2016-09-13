@@ -40,6 +40,8 @@ var GetOneHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 		if checkError(w, httpErr) {
 			return
 		}
+
+		w.Header().Set("content-type", "application/json")
 		json.NewEncoder(w).Encode(obj)
 	}
 }
@@ -52,6 +54,8 @@ var GetOneWhereHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 		if checkError(w, httpErr) {
 			return
 		}
+
+		w.Header().Set("content-type", "application/json")
 		json.NewEncoder(w).Encode(obj)
 	}
 }
@@ -64,6 +68,7 @@ var GetAllHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 			return
 		}
 
+		w.Header().Set("content-type", "application/json")
 		json.NewEncoder(w).Encode(obj)
 	}
 }
@@ -76,6 +81,8 @@ var GetAllWhereHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 		if checkError(w, httpErr) {
 			return
 		}
+
+		w.Header().Set("content-type", "application/json")
 		json.NewEncoder(w).Encode(obj)
 	}
 }
@@ -88,8 +95,9 @@ var PostHandler = func(ctrl controllers.APIController) http.HandlerFunc {
 			return
 		}
 
-		json.NewEncoder(w).Encode(obj)
+		w.Header().Set("content-type", "application/json")
 		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(obj)
 	}
 }
 
@@ -127,6 +135,7 @@ var LightHandler = func(ctrl controllers.RequestController) http.HandlerFunc {
 			return
 		}
 
+		w.Header().Set("content-type", "application/json")
 		json.NewEncoder(w).Encode(obj)
 	}
 }
