@@ -113,7 +113,7 @@ func (service TagService) Update(tag *models.Tag) {
 	}
 
 	tag.Name = strings.ToLower(tag.Name)
-	if db := service.GetDB().Update(&tag); db.Error != nil {
+	if db := service.GetDB().Save(&tag); db.Error != nil {
 		Error = utils.DatabaseError(db)
 	}
 }

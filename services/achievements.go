@@ -89,7 +89,7 @@ func (service AchievementService) Update(achievement *models.Achievement) {
 		return
 	}
 
-	if db := service.GetDB().Update(&achievement); db.Error != nil {
+	if db := service.GetDB().Save(&achievement); db.Error != nil {
 		Error = utils.DatabaseError(db)
 	}
 }

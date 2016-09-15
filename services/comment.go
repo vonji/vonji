@@ -101,7 +101,7 @@ func (service CommentService) Update(comment *models.Comment) {
 		return
 	}
 
-	if db := service.GetDB().Update(&comment); db.Error != nil {
+	if db := service.GetDB().Save(&comment); db.Error != nil {
 		Error = utils.DatabaseError(db)
 	}
 }
