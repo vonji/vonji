@@ -123,7 +123,7 @@ var validation []func(*models.User, *models.Achievement) bool = []func(*models.U
 			Error = utils.DatabaseError(db)
 			return false
 		}
-		return true
+		return len(responses) >= achievement.CheckData
 	},
 	func(user *models.User, achievement *models.Achievement) bool {
 		responses := Response.GetAllWhere(&models.Response{ Post: models.Post{ UserID: user.ID } })
@@ -132,6 +132,26 @@ var validation []func(*models.User, *models.Achievement) bool = []func(*models.U
 	func(user *models.User, achievement *models.Achievement) bool {
 		/*requests := Request.GetAllWhere(&models.Request{ Post: models.Post{ UserID: user.ID } })
 		return requests != nil && len(requests) >= achievement.CheckData*/
+		return false
+	},
+	func(user *models.User, achievement *models.Achievement) bool {
+		requests := Request.GetAllWhere(&models.Request{ Status: "accepted" })
+		tags := Tag.GetAll()
+		counts := make([]int, len(tags) + 1)
+
+		for _, request := range requests {
+			if Response.GetOneWhere(&models.Response{ Post: models.Post{ UserID: user.ID }, Accepted: true, RequestID: request.ID }) != nil {
+				for j := range request.Tags {
+					counts[j] += 1
+				}
+			}
+		}
+		for _, count := range counts {
+			if count >= achievement.CheckData {
+				return true
+			}
+		}
+
 		return false
 	},
 }
