@@ -13,6 +13,7 @@ type Request struct {
 	Duration  uint
 	Frequency uint
 	FrequencyUnit string
-	PeriodStart  string
-	PeriodEnd    string
+	PeriodStart   string
+	PeriodEnd     string
+	Location      string
 }
