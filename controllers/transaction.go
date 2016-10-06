@@ -1,12 +1,13 @@
 package controllers
 
 import (
-"encoding/json"
-"net/http"
+	"encoding/json"
+	"net/http"
+	"fmt"
 
-"github.com/vonji/vonji-api/services"
-"github.com/vonji/vonji-api/utils"
-"github.com/vonji/vonji-api/models"
+	"github.com/vonji/vonji-api/services"
+	"github.com/vonji/vonji-api/utils"
+	"github.com/vonji/vonji-api/models"
 	"github.com/gorilla/mux"
 )
 
@@ -61,7 +62,26 @@ func (ctrl TransactionController) Create(w http.ResponseWriter, r *http.Request)
 		transaction.To.VCoins += transaction.Amount
 		services.User.Update(&transaction.From)
 		services.User.Update(&transaction.To)
+
 	}
+	hammer := "vCoins"
+	if transaction.Type == "VACTION" {
+		hammer = "vActions"
+	}
+	go (func() {
+		services.Notification.Create(&models.Notification {
+			UserID: transaction.FromID,
+			Title: fmt.Sprintf("Vous avez été débité de %d %s", transaction.Amount, hammer),
+			Message: transaction.Reason,
+		})
+	})()
+	go (func() {
+		services.Notification.Create(&models.Notification {
+			UserID: transaction.ToID,
+			Title: fmt.Sprintf("Vous avez recu %d %s", transaction.Amount, hammer),
+			Message: transaction.Reason,
+		})
+	})()
 
 	return services.Transaction.GetOne(transaction.ID), nil
 }
