@@ -88,6 +88,15 @@ func (service ResponseService) Create(response *models.Response)  *models.Respon
 		return nil
 	}
 
+	go(func() {
+		request := Request.GetOne(response.RequestID)
+		Notification.Create(&models.Notification{
+			UserID: request.UserID,
+			Title: "Votre demande à récue une nouvelle réponse",
+			Message: request.Title,
+		})
+	})()
+
 	return Response.GetOne(response.ID)
 }
 
