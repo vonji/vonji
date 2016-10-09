@@ -68,4 +68,5 @@ func initDB(db *gorm.DB) {
 			Gender: "other",
 		})
 	}
+	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{}, &models.Transaction{}, &models.Achievement{}, &models.Notification{})
 }
