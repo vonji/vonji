@@ -51,5 +51,5 @@ func main() {
 }
 
 func initDB(db *gorm.DB) {
-	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{}, &models.Transaction{}, &models.Achievement{}, &models.Notification{})
+	db.AutoMigrate(&models.Tag{}, &models.User{}, &models.Request{}, &models.Response{}, &models.Comment{}, &models.Transaction{}, &models.Achievement{}, &models.Notification{}, &models.Ad{})
 }
