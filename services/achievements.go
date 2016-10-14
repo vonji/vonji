@@ -165,7 +165,7 @@ func (service AchievementService) Award() {
 			for _, user := range users {
 				if !lookatmeimsocoolidontevenneedfunctionalfunctions(user.Achievements, achievement.ID) && validation[achievement.CheckID](&user, &achievement) {
 					user.Achievements = append(user.Achievements, achievement)
-					user.VAction += achievement.Award
+					user.VActions += achievement.Award
 					User.Update(&user)
 					Transaction.Create(&models.Transaction{ FromID: 1, ToID: user.ID, Type: "VACTION", Amount: achievement.Award, Reason: "Achievement award", Source: "/achievements" })
 				}

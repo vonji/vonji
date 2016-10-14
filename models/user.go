@@ -17,9 +17,9 @@ type User struct {
 	Birthday      string
 	Location      string
 	VCoins        int
-	VAction       int
+	VActions      int
 	Avatar        string
-	Gender	      string
+	Gender        string
 	Achievements  []Achievement `gorm:"many2many:user_achievements;"`
 	Tags          []Tag `gorm:"many2many:user_tags;"`
 }
