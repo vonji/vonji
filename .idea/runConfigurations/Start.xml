@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Start" type="js.build_tools.npm" factoryName="npm">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="start" />
+    <node-interpreter value="project" />
+    <envs />
+    <method>
+      <option name="NpmBeforeRunTask" enabled="false">
+        <package-json value="$PROJECT_DIR$/package.json" />
+        <command value="build" />
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
+  </configuration>
+</component>
