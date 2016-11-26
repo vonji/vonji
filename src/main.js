@@ -14,7 +14,7 @@ const knex = knexFactory({
         host: '127.0.0.1',
         user: 'vonji-api',
         password: 'vonji-api',
-        database: 'vonji-api',
+        database: 'vonji-api-dev',
         charset: 'utf8'
     }
 });

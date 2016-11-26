@@ -153,3 +153,4 @@ jspm_packages
 # Mac specific files
 .DS_Store
 /dist/
+.idea/inspectionProfiles/
