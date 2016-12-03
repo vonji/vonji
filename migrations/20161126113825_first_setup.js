@@ -13,7 +13,7 @@ exports.up = (knex) => {
             // has many tags
             table.increments().primary();
             table.timestamps();
-            table.string('email');
+            table.string('email').unique();
             table.string('password');
             table.string('displayed_name');
             table.string('real_name');
