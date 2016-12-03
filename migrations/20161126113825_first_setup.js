@@ -23,7 +23,7 @@ exports.up = (knex) => {
             table.string('twitter_link');
             table.string('linkedin_link');
             table.string('phone');
-            table.string('birthday');
+            table.date('birthday');
             table.string('location');
             table.integer('vcoins');
             table.integer('vactions');

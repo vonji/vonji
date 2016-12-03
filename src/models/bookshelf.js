@@ -1,7 +1,7 @@
 import knexFactory from "knex";
 import bookshelfFactory from "bookshelf";
 
-export const knex = knexFactory({
+const knex = knexFactory({
     client: 'pg',
     connection: {
         host: '127.0.0.1',
@@ -12,4 +12,8 @@ export const knex = knexFactory({
     }
 });
 
-export const bs = bookshelfFactory(knex);
+const bs = bookshelfFactory(knex);
+
+bs.plugin('bookshelf-camelcase');
+
+export {bs, knex};

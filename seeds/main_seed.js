@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 exports.seed = function (knex, Promise) {
     return knex('users').del()
     .then(function () {
@@ -10,6 +12,9 @@ exports.seed = function (knex, Promise) {
                 real_name: 'Loup Peluso',
                 description: 'Coucou les p\'tits lapins.',
                 motto: "J'aime les pommes",
+                birthday: moment('1985-04-03'),
+                created_at: moment(),
+                updated_at: moment()
             }),
         ]);
     });

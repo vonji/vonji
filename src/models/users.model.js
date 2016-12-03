@@ -1,4 +1,4 @@
-import {bs} from "bookshelf";
+import {bs} from "./bookshelf";
 
 export const User = bs.Model.extend({
     tableName: 'users',
