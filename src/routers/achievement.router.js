@@ -1,10 +1,10 @@
-import {User} from "../models/users.model";
+import Achievement from "../models/achievement.model";
 import express from "express";
 
 const router = express.Router();
 
 router.get('/:id', (req, res) => {
-    new User({id: req.params.id})
+    new Achievement({id: req.params.id})
         .fetch()
         .then(resource => {
             if (resource) {
@@ -17,18 +17,18 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    User.fetchAll()
+    Achievement.fetchAll()
         .then(resources => res.send(resources.toJSON()));
 });
 
 router.post('/', (req, res) => {
-    new User().save(req.body)
+    new Achievement().save(req.body)
         .then(resource => res.send(resource.toJSON()))
         .catch(() => res.sendStatus(500));
 });
 
 router.put('/:id', (req, res) => {
-    new User({id: req.params.id})
+    new Achievement({id: req.params.id})
         .fetch()
         .then(resource => {
             if (resource) {
@@ -41,7 +41,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    new User({id: req.params.id})
+    new Achievement({id: req.params.id})
         .fetch()
         .then(resource => {
             if (resource) {
