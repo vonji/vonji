@@ -1,10 +1,10 @@
-import User from "../models/user.model";
+import Ad from "../models/ad.model";
 import express from "express";
 
 const router = express.Router();
 
 router.get('/:id', (req, res) => {
-    new User({id: req.params.id})
+    new Ad({id: req.params.id})
         .fetch()
         .then(resource => {
             if (resource) {
@@ -20,7 +20,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    User.fetchAll()
+    Ad.fetchAll()
         .then(resources => res.send(resources.toJSON()))
         .catch(err => {
             console.error(err);
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    new User().save(req.body)
+    new Ad().save(req.body)
         .then(resource => res.send(resource.toJSON()))
         .catch(err => {
             console.error(err);
@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-    new User({id: req.params.id})
+    new Ad({id: req.params.id})
         .fetch()
         .then(resource => {
             if (resource) {
@@ -54,7 +54,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    new User({id: req.params.id})
+    new Ad({id: req.params.id})
         .fetch()
         .then(resource => {
             if (resource) {

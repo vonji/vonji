@@ -47,8 +47,8 @@ exports.up = (knex) => {
             table.float('longitude');
             table.string('region');
             table.string('url');
-            table.string('image-url');
-            table.string('alt-text');
+            table.string('image_url');
+            table.string('alt_text');
         }),
         knex.schema.createTable('tags', table => {
             table.increments().primary();

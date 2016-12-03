@@ -21,7 +21,11 @@ router.get('/:id', (req, res) => {
 
 router.get('/', (req, res) => {
     Achievement.fetchAll()
-        .then(resources => res.send(resources.toJSON()));
+        .then(resources => res.send(resources.toJSON()))
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(500);
+        });
 });
 
 router.post('/', (req, res) => {
