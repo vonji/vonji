@@ -13,7 +13,10 @@ router.get('/:id', (req, res) => {
                 res.sendStatus(404);
             }
         })
-        .catch(() => res.sendStatus(500));
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(500);
+        });
 });
 
 router.get('/', (req, res) => {
@@ -24,7 +27,10 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     new User().save(req.body)
         .then(resource => res.send(resource.toJSON()))
-        .catch(() => res.sendStatus(500));
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(500);
+        });
 });
 
 router.put('/:id', (req, res) => {
@@ -37,7 +43,10 @@ router.put('/:id', (req, res) => {
                 res.sendStatus(404);
             }
         })
-        .catch(() => res.sendStatus(500));
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(500);
+        });
 });
 
 router.delete('/:id', (req, res) => {
@@ -50,7 +59,10 @@ router.delete('/:id', (req, res) => {
                 res.sendStatus(404);
             }
         })
-        .catch(() => res.sendStatus(500));
+        .catch(err => {
+            console.error(err);
+            res.sendStatus(500);
+        });
 });
 
 export default router;
