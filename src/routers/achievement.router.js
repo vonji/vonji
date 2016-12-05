@@ -1,22 +1,11 @@
 import Achievement from "../models/achievement.model";
 import express from "express";
+import {fetchOne} from "./utils";
 
 const router = express.Router();
 
 router.get('/:id', (req, res) => {
-    new Achievement({id: req.params.id})
-        .fetch()
-        .then(resource => {
-            if (resource) {
-                res.send(resource.toJSON());
-            } else {
-                res.sendStatus(404);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            res.sendStatus(500);
-        });
+    fetchOne(res, new Achievement({id: req.params.id}));
 });
 
 router.get('/', (req, res) => {
