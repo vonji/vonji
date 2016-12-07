@@ -1,6 +1,6 @@
 import Ad from "../models/ad.model";
 import express from "express";
-import {fetchOne} from "./utils";
+import {fetchOne, fetchAll, remove, save} from "./utils";
 
 const router = express.Router();
 
@@ -9,53 +9,27 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    Ad.fetchAll()
-        .then(resources => res.send(resources.toJSON()))
-        .catch(err => {
-            console.error(err);
-            res.sendStatus(500);
-        });
+    fetchAll(res, Ad);
 });
 
 router.post('/', (req, res) => {
-    new Ad().save(req.body)
-        .then(resource => res.send(resource.toJSON()))
-        .catch(err => {
-            console.error(err);
-            res.sendStatus(500);
-        });
+    save(res, req.body, new Ad());
 });
 
 router.put('/:id', (req, res) => {
-    new Ad({id: req.params.id})
-        .fetch()
-        .then(resource => {
-            if (resource) {
-                resource.save(req.body).then(() => res.send(resource.toJSON()));
-            } else {
-                res.sendStatus(404);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            res.sendStatus(500);
-        });
+    fetchOne(res, new Ad({id: req.params.id}), {
+        done(model) {
+            save(res, req.body, model);
+        },
+    });
 });
 
 router.delete('/:id', (req, res) => {
-    new Ad({id: req.params.id})
-        .fetch()
-        .then(resource => {
-            if (resource) {
-                resource.destroy().then(() => res.sendStatus(204));
-            } else {
-                res.sendStatus(404);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            res.sendStatus(500);
-        });
+    fetchOne(res, new Ad({id: req.params.id}), {
+        done(model) {
+            remove(res, model);
+        },
+    });
 });
 
 export default router;
