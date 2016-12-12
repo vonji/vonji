@@ -1,0 +1,68 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Vonji API
+  description: Share your skills with the world!
+  version: "1.0.0"
+# the domain of the service
+host: api.vonji.fr
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /users:
+    get:
+      summary: Users
+      description: |
+        This end points returns all the users actually registered into the database.
+      tags:
+        - Users
+      responses:
+        200:
+          description: An array of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+definitions:
+  User:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      displayedName:
+        type: string
+      realName:
+        type: string
+      description:
+        type: string
+      motto:
+        type: string
+      facebookLink:
+        type: string
+      twitterLink:
+        type: string
+      linkedinLink:
+        type: string
+      phone:
+        type: string
+      birthday:
+        type: string
+        format: date
+      location:
+        type: string
+      vcoins:
+        type: integer
+      vactions:
+        type: integer
+      avatar:
+        type: string
+      gender:
+        type: string
