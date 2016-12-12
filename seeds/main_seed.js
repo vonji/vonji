@@ -1,9 +1,10 @@
 const moment = require('moment');
+const Chance = require('chance');
 
-exports.seed = function (knex, Promise) {
+exports.seed = (knex, Promise) => {
     return Promise.all([
         knex('users').del()
-            .then(function () {
+            .then(() => {
                 return Promise.all([
                     knex('users').insert({
                         id: 1,
@@ -20,7 +21,7 @@ exports.seed = function (knex, Promise) {
                 ]);
             }),
         knex('achievements').del()
-            .then(function () {
+            .then(() => {
                 return Promise.all([
                     knex('achievements').insert({
                         id: 1,
@@ -35,5 +36,7 @@ exports.seed = function (knex, Promise) {
                     }),
                 ]);
             }),
+        knex('ads').del(),
+        knex('tags').del(),
     ]);
 };

@@ -14,8 +14,7 @@ const fetch = (res, promise, {done} = {}) => {
         } else {
             res.sendStatus(404);
         }
-    })
-        .catch(errorHandler(res));
+    }).catch(errorHandler(res));
 };
 
 export const send = (res, model) => {
