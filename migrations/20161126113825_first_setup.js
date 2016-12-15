@@ -97,8 +97,8 @@ exports.up = (knex) => {
                 table.integer('duration');
                 table.integer('frequency');
                 table.string('frequency_unit');
-                table.string('period_start');
-                table.string('period_end');
+                table.date('period_start');
+                table.date('period_end');
                 table.string('location');
             }),
             knex.schema.createTable('transactions', table => {
