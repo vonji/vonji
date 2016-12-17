@@ -29,7 +29,9 @@ export const remove = (res, model) => {
 
 export const save = (res, attributes, model) => {
     model.save(attributes)
-        .then((newModel) => res.send(newModel.toJSON()))
+        .then((newModel) => {
+          res.send(newModel.toJSON());
+        })
         .catch(errorHandler(res));
 };
 

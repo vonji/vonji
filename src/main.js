@@ -5,6 +5,7 @@ import adRouter from "./routers/ad.router";
 import achievementRouter from "./routers/achievement.router";
 import requestRouter from "./routers/request.router";
 import tagRouter from "./routers/tag.router";
+import notificationRouter from "./routers/notification.router";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/achievements', achievementRouter);
 app.use('/ads', adRouter);
 app.use('/tags', tagRouter);
 app.use('/requests', requestRouter);
+app.use('/notifications', notificationRouter);
 
 app.listen(3000, () => {
     console.log('Application started');
