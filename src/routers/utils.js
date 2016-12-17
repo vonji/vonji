@@ -37,7 +37,6 @@ export const save = (res, attributes, model) => {
 
 export const fetchOne = (res, model, options) => {
     return fetch(res, model.fetch(), options);
-
 };
 
 export const fetchAll = (res, model, options) => {
