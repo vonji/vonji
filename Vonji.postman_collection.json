@@ -97,7 +97,7 @@
     {
       "id": "0026c036-49c2-b02a-2562-c8196b8074d5",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/achievements/1",
+      "url": "http://{{host}}:{{port}}/achievements/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "PUT",
@@ -116,7 +116,7 @@
     {
       "id": "04d73de8-8cb7-5c1a-6fec-77d42b816bc8",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/requests/1",
+      "url": "http://{{host}}:{{port}}/requests/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "PUT",
@@ -135,7 +135,7 @@
     {
       "id": "0afdce24-083e-b99e-e14f-be882a271a0b",
       "headers": "",
-      "url": "http://localhost:3000/ads/1",
+      "url": "http://{{host}}:{{port}}/ads/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -153,7 +153,7 @@
     {
       "id": "0dd9bb1e-3ddf-56d3-97cc-dab4c93aa39a",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/requests",
+      "url": "http://{{host}}:{{port}}/requests",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "POST",
@@ -172,7 +172,7 @@
     {
       "id": "0e5b73cc-d079-619d-9ce6-13be2c0bd1c4",
       "headers": "",
-      "url": "http://localhost:3000/tags",
+      "url": "http://{{host}}:{{port}}/tags",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -190,7 +190,7 @@
     {
       "id": "1d53a2e3-b628-ade3-c60c-9a687c11ab2c",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/notifications/1",
+      "url": "http://{{host}}:{{port}}/notifications/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "DELETE",
@@ -209,7 +209,7 @@
     {
       "id": "28961b7b-adf1-0b03-b1a1-f0dcaac95c47",
       "headers": "",
-      "url": "http://localhost:3000/notifications",
+      "url": "http://{{host}}:{{port}}/notifications",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -227,7 +227,7 @@
     {
       "id": "28a353a6-c95b-e924-ed07-fadca8b97910",
       "headers": "",
-      "url": "http://localhost:3000/tags/1",
+      "url": "http://{{host}}:{{port}}/tags/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -245,7 +245,7 @@
     {
       "id": "3c73918e-1711-3bc0-5b24-58f44555cc6b",
       "headers": "",
-      "url": "http://localhost:3000/ads",
+      "url": "http://{{host}}:{{port}}/ads",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -263,7 +263,7 @@
     {
       "id": "4586be06-f059-fe3a-be0f-d1101111b81f",
       "headers": "",
-      "url": "http://localhost:3000/users",
+      "url": "http://{{host}}:{{port}}/users",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -281,7 +281,7 @@
     {
       "id": "4fcafc55-00c7-f917-a714-d5f8096aa94a",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/ads",
+      "url": "http://{{host}}:{{port}}/ads",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "POST",
@@ -300,7 +300,7 @@
     {
       "id": "54400bd9-5909-b0f5-ac4b-105a02243cdc",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/notifications/1",
+      "url": "http://{{host}}:{{port}}/notifications/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "PUT",
@@ -319,7 +319,7 @@
     {
       "id": "59daff7e-fc8b-e6ce-1da5-d5471e0ece6a",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/users/1",
+      "url": "http://{{host}}:{{port}}/users/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "DELETE",
@@ -338,7 +338,7 @@
     {
       "id": "6882cbee-15a9-c99b-e3fc-8192c8fc2f44",
       "headers": "",
-      "url": "http://localhost:3000/users/1",
+      "url": "http://{{host}}:{{port}}/users/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -356,7 +356,7 @@
     {
       "id": "76bd4926-d186-206f-849e-f543c8cf1dd9",
       "headers": "",
-      "url": "http://localhost:3000/requests",
+      "url": "http://{{host}}:{{port}}/requests",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -374,7 +374,7 @@
     {
       "id": "7b8652ee-c7ee-a959-0994-efb5921419e2",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/requests/1",
+      "url": "http://{{host}}:{{port}}/requests/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "DELETE",
@@ -393,7 +393,7 @@
     {
       "id": "81567cde-c963-e114-31af-f6aceab4eb66",
       "headers": "",
-      "url": "http://localhost:3000/requests/1",
+      "url": "http://{{host}}:{{port}}/requests/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -411,7 +411,7 @@
     {
       "id": "81e09559-b589-fd46-18f9-33b9f5905262",
       "headers": "",
-      "url": "http://localhost:3000/achievements/1",
+      "url": "http://{{host}}:{{port}}/achievements/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -429,7 +429,7 @@
     {
       "id": "8d7b4b66-c7fa-58c9-97e9-e99280f27aa5",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/achievements/1",
+      "url": "http://{{host}}:{{port}}/achievements/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "DELETE",
@@ -448,7 +448,7 @@
     {
       "id": "a128757f-c5bb-93ab-98de-b547b68135de",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/tags",
+      "url": "http://{{host}}:{{port}}/tags",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "POST",
@@ -467,7 +467,7 @@
     {
       "id": "a5ced29e-145b-2ce8-c78a-ad2af00ce04b",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/ads/1",
+      "url": "http://{{host}}:{{port}}/ads/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "PUT",
@@ -486,7 +486,7 @@
     {
       "id": "be8ea204-8973-4339-ad37-80a586d582e5",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/ads/1",
+      "url": "http://{{host}}:{{port}}/ads/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "DELETE",
@@ -505,7 +505,7 @@
     {
       "id": "c903e080-dd41-7b6c-b4d2-e7ad14b4ef5f",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/users",
+      "url": "http://{{host}}:{{port}}/users",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "POST",
@@ -524,7 +524,7 @@
     {
       "id": "cdeca0ad-683e-ee18-863f-1f1cf2fcb1f3",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/notifications",
+      "url": "http://{{host}}:{{port}}/notifications",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "POST",
@@ -543,7 +543,7 @@
     {
       "id": "d5a504be-426d-77b8-2d1d-8997f94f0ec7",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/achievements",
+      "url": "http://{{host}}:{{port}}/achievements",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "POST",
@@ -562,7 +562,7 @@
     {
       "id": "d9db9fd4-6370-fdd4-ea50-f907481e665e",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/users/1",
+      "url": "http://{{host}}:{{port}}/users/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "PUT",
@@ -581,7 +581,7 @@
     {
       "id": "e67fc149-f1e9-e3b2-fcfa-f6b0f1f0b5e2",
       "headers": "",
-      "url": "http://localhost:3000/notifications/1",
+      "url": "http://{{host}}:{{port}}/notifications/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -599,7 +599,7 @@
     {
       "id": "ef214980-e714-ecdd-bfa1-6ce31b231351",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/tags/1",
+      "url": "http://{{host}}:{{port}}/tags/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "PUT",
@@ -618,7 +618,7 @@
     {
       "id": "fbd9038c-0d07-935b-a6a6-25f971db2813",
       "headers": "",
-      "url": "http://localhost:3000/achievements",
+      "url": "http://{{host}}:{{port}}/achievements",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "GET",
@@ -636,7 +636,7 @@
     {
       "id": "ff9c7cbc-1bdb-9e1c-0d64-c0d5698f733f",
       "headers": "Content-Type: application/json\n",
-      "url": "http://localhost:3000/tags/1",
+      "url": "http://{{host}}:{{port}}/tags/1",
       "preRequestScript": null,
       "pathVariables": {},
       "method": "DELETE",
