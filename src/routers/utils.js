@@ -42,3 +42,33 @@ export const fetchOne = (res, model, options) => {
 export const fetchAll = (res, model, options) => {
 	return fetch(res, model.fetchAll(), options);
 };
+
+export const simpleRouting = (router, Model) => {
+	router.get('/:id', (req, res) => {
+		fetchOne(res, new Model({id: req.params.id}));
+	});
+
+	router.get('/', (req, res) => {
+		fetchAll(res, Model);
+	});
+
+	router.post('/', (req, res) => {
+		save(res, req.body, new Model());
+	});
+
+	router.put('/:id', (req, res) => {
+		fetchOne(res, new Model({id: req.params.id}), {
+			done(model) {
+				save(res, req.body, model);
+			},
+		});
+	});
+
+	router.delete('/:id', (req, res) => {
+		fetchOne(res, new Model({id: req.params.id}), {
+			done(model) {
+				remove(res, model);
+			},
+		});
+	});
+};
