@@ -8,6 +8,7 @@ import tagRouter from "./routers/tag.router";
 import responseRouter from "./routers/response.router";
 import notificationRouter from "./routers/notification.router";
 import transactionRouter from "./routers/transaction.router";
+import commentRouter from "./routers/comment.router";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/requests', requestRouter);
 app.use('/notifications', notificationRouter);
 app.use('/responses', responseRouter);
 app.use('/transactions', transactionRouter);
+app.use('/comments', commentRouter);
 
 app.listen(3000, () => {
 	console.log('Application started');

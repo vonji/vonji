@@ -28,6 +28,7 @@ exports.seed = (knex) => {
 
 	return Promise.resolve().then(() => {
 		return Promise.all([
+			sknex('comments').del(),
 			sknex('responses').del(),
 			sknex('tags_requests').del({ noSeq: true }),
 		]);
@@ -229,7 +230,18 @@ exports.seed = (knex) => {
 					accepted: false,
 					rating: 2,
 				},
-			])
+			]),
+			sknex('comments').insert([
+				{
+					created_at: moment(),
+					updated_at: moment(),
+					content: 'fjdkslqf djskqf djks',
+					commentable_id: 1,
+					commentable_type: 'response',
+					user_id: 1,
+					type: 'fdsjqkfd s',
+				}
+			]),
 		]);
 	});
 };
