@@ -3,10 +3,17 @@ const Chance = require('chance');
 
 exports.seed = (knex) => {
 	const sknex = (resource) => ({
-		del: function () {
+		del: function (options = {}) {
 			return knex(resource).del()
 				.then(() => {
-					console.log(`All ${resource} has been removed.`)
+					if (options.noSeq) {
+						return;
+					} else {
+						return knex.raw(`ALTER SEQUENCE ${resource}_id_seq RESTART WITH 1`);
+					}
+				})
+				.then(() => {
+					console.log(`All ${resource} has been removed.`);
 				})
 				.catch(console.error);
 		},
@@ -22,7 +29,7 @@ exports.seed = (knex) => {
 	return Promise.resolve().then(() => {
 		return Promise.all([
 			sknex('responses').del(),
-			sknex('tags_requests').del(),
+			sknex('tags_requests').del({ noSeq: true }),
 		]);
 	}).then(() => {
 		return Promise.all([
@@ -41,7 +48,6 @@ exports.seed = (knex) => {
 		return Promise.all([
 			sknex('users').insert([
 				{
-					id: 1,
 					email: 'loup.peluso@vonji.fr',
 					password: 'loup.peluso',
 					displayed_name: 'Loup',
@@ -50,10 +56,9 @@ exports.seed = (knex) => {
 					motto: 'J\'aime les pommes',
 					birthday: moment('1985-04-03'),
 					created_at: moment(),
-					updated_at: moment()
+					updated_at: moment(),
 				},
 				{
-					id: 2,
 					email: 'david.lancar@vonji.fr',
 					password: 'david.lancar',
 					displayed_name: 'David',
@@ -62,12 +67,11 @@ exports.seed = (knex) => {
 					motto: 'EIrezk fdjksf eziomqrem dskfd kl',
 					birthday: moment('1985-04-03'),
 					created_at: moment(),
-					updated_at: moment()
+					updated_at: moment(),
 				},
 			]),
 			sknex('achievements').insert([
 				{
-					id: 1,
 					created_at: moment(),
 					updated_at: moment(),
 					award: 51,
@@ -78,7 +82,6 @@ exports.seed = (knex) => {
 					check_data: 8,
 				},
 				{
-					id: 2,
 					created_at: moment(),
 					updated_at: moment(),
 					award: 51,
@@ -89,34 +92,42 @@ exports.seed = (knex) => {
 					check_data: 8,
 				},
 			]),
-			sknex('ads').insert({
-				id: 1,
-				created_at: moment(),
-				updated_at: moment(),
-				latitude: 51.12,
-				longitude: 54.42,
-				region: 'Paris',
-				url: 'https://test.com',
-				image_url: 'http://image.com',
-				alt_text: 'Super text',
-			}),
+			sknex('ads').insert([
+				{
+					created_at: moment(),
+					updated_at: moment(),
+					latitude: 51.12,
+					longitude: 54.42,
+					region: 'Paris',
+					url: 'https://test.com',
+					image_url: 'http://image.com',
+					alt_text: 'Super text',
+				},
+				{
+					created_at: moment(),
+					updated_at: moment(),
+					latitude: 47,
+					longitude: 7.27,
+					region: 'Rome',
+					url: 'https://fdsfdsqfdsq.com',
+					image_url: 'http://reuziorez.com',
+					alt_text: 'JFKDLM jfdkls mfjdks fjieomFJKD',
+				}
+			]),
 			sknex('tags').insert([
 				{
-					id: 1,
 					created_at: moment(),
 					updated_at: moment(),
 					name: 'Tag',
 					description: 'Description of tag',
 				},
 				{
-					id: 2,
 					created_at: moment(),
 					updated_at: moment(),
 					name: 'Tag2',
 					description: 'Description of tag2',
 				},
 				{
-					id: 3,
 					created_at: moment(),
 					updated_at: moment(),
 					name: 'Tag3',
@@ -128,7 +139,6 @@ exports.seed = (knex) => {
 		return Promise.all([
 			sknex('requests').insert([
 				{
-					id: 1,
 					created_at: moment(),
 					updated_at: moment(),
 					user_id: 1,
@@ -144,7 +154,6 @@ exports.seed = (knex) => {
 					location: 'Paris',
 				},
 				{
-					id: 2,
 					created_at: moment(),
 					updated_at: moment(),
 					user_id: 1,
@@ -162,22 +171,25 @@ exports.seed = (knex) => {
 			]),
 			sknex('notifications').insert([
 				{
-					id: 1,
 					user_id: 1,
+					created_at: moment(),
+					updated_at: moment(),
 					title: "FJK dsjf dksjmfd",
 					message: "JKlfdskfd sjfkdls",
 					read: true,
 				},
 				{
-					id: 2,
 					user_id: 1,
+					created_at: moment(),
+					updated_at: moment(),
 					title: "FJK dsjf dksjmfd",
 					message: "JKlfdskfd sjfkdls",
 					read: false,
 				},
 				{
-					id: 3,
 					user_id: 1,
+					created_at: moment(),
+					updated_at: moment(),
 					title: "Ikfkmfd",
 					message: "Jskfd sjfkdls",
 					read: false,
@@ -196,6 +208,28 @@ exports.seed = (knex) => {
 					request_id: 1,
 				},
 			]),
+			sknex('responses').insert([
+				{
+					created_at: moment(),
+					updated_at: moment(),
+					user_id: 1,
+					request_id: 1,
+					content: "JFkdlsf djskqf ejkfm jdksqfj dksqlf jdksq fjdksmlqfd",
+					value: 75,
+					accepted: true,
+					rating: 2,
+				},
+				{
+					created_at: moment(),
+					updated_at: moment(),
+					user_id: 2,
+					request_id: 1,
+					content: "ureizo ifd jskqfmj dqimefzj fdm sjkfdsqfd",
+					value: 5,
+					accepted: false,
+					rating: 2,
+				},
+			])
 		]);
 	});
 };
