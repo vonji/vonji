@@ -5,7 +5,9 @@ import adRouter from "./routers/ad.router";
 import achievementRouter from "./routers/achievement.router";
 import requestRouter from "./routers/request.router";
 import tagRouter from "./routers/tag.router";
+import responseRouter from "./routers/response.router";
 import notificationRouter from "./routers/notification.router";
+import transactionRouter from "./routers/transaction.router";
 
 const app = express();
 
@@ -18,7 +20,9 @@ app.use('/ads', adRouter);
 app.use('/tags', tagRouter);
 app.use('/requests', requestRouter);
 app.use('/notifications', notificationRouter);
+app.use('/responses', responseRouter);
+app.use('/transactions', transactionRouter);
 
 app.listen(3000, () => {
-    console.log('Application started');
+	console.log('Application started');
 });

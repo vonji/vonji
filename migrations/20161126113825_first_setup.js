@@ -53,7 +53,7 @@ exports.up = (knex) => {
         knex.schema.createTable('tags', table => {
             table.increments().primary();
             table.timestamps();
-            table.string('name');
+            table.string('name').unique();
             table.string('description');
         }),
     ]).then(() => {

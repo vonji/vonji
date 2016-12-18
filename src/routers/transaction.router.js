@@ -1,23 +1,23 @@
-import Notification from "../models/notification.model";
+import Transaction from "../models/transaction.model";
 import express from "express";
 import {fetchOne, fetchAll, remove, save} from "./utils";
 
 const router = express.Router();
 
 router.get('/:id', (req, res) => {
-	fetchOne(res, new Notification({id: req.params.id}));
+	fetchOne(res, new Transaction({id: req.params.id}));
 });
 
 router.get('/', (req, res) => {
-	fetchAll(res, Notification);
+	fetchAll(res, Transaction);
 });
 
 router.post('/', (req, res) => {
-	save(res, req.body, new Notification());
+	save(res, req.body, new Transaction());
 });
 
 router.put('/:id', (req, res) => {
-	fetchOne(res, new Notification({id: req.params.id}), {
+	fetchOne(res, new Transaction({id: req.params.id}), {
 		done(model) {
 			save(res, req.body, model);
 		},
@@ -25,7 +25,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-	fetchOne(res, new Notification({id: req.params.id}), {
+	fetchOne(res, new Transaction({id: req.params.id}), {
 		done(model) {
 			remove(res, model);
 		},

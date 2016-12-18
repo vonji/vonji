@@ -1,21 +1,22 @@
 {
-  "name": "vonji-api",
-  "version": "0.0.1",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "bookshelf": "^0.10.2",
-    "bookshelf-camelcase": "^1.1.4",
-    "chance": "^1.0.4",
-    "express": "^4.14.0",
-    "knex": "^0.12.6",
-    "moment": "^2.17.0"
-  },
-  "scripts": {
-    "start": "babel-node src/main.js"
-  },
-  "devDependencies": {
-    "babel-preset-es2015": "^6.18.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2"
-  }
+	"name": "vonji-api",
+	"version": "0.0.1",
+	"dependencies": {
+		"body-parser": "^1.15.2",
+		"bookshelf": "^0.10.2",
+		"bookshelf-camelcase": "^1.1.4",
+		"chance": "^1.0.4",
+		"express": "^4.14.0",
+		"knex": "^0.12.6",
+		"moment": "^2.17.0"
+	},
+	"scripts": {
+		"resetbdd": "knex migrate:rollback && knex migrate:latest && knex seed:run",
+		"start": "babel-node src/main.js"
+	},
+	"devDependencies": {
+		"babel-preset-es2015": "^6.18.0",
+		"gulp": "^3.9.1",
+		"gulp-babel": "^6.1.2"
+	}
 }
