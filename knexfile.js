@@ -5,9 +5,9 @@ module.exports = {
 	development: {
 		client: 'postgresql',
 		connection: {
-			database: 'vonji-api-dev',
-			user: 'vonji-api',
-			password: 'vonji-api'
+			database: 'vonji_api_dev',
+			user: 'vonji_api',
+			password: 'vonji_api'
 		},
 		pool: {
 			min: 2,
@@ -21,9 +21,9 @@ module.exports = {
 	staging: {
 		client: 'postgresql',
 		connection: {
-			database: 'vonji_api-staging',
-			user: 'vonji-api',
-			password: 'vonji-api'
+			database: 'vonji_api_staging',
+			user: 'vonji_api',
+			password: 'vonji_api'
 		},
 		pool: {
 			min: 2,
@@ -38,8 +38,8 @@ module.exports = {
 		client: 'postgresql',
 		connection: {
 			database: 'vonji_api',
-			user: 'vonji-api',
-			password: 'vonji-api'
+			user: 'vonji_api',
+			password: 'vonji_api'
 		},
 		pool: {
 			min: 2,

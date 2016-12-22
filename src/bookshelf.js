@@ -5,9 +5,9 @@ const knex = knexFactory({
 	client: 'pg',
 	connection: {
 		host: '127.0.0.1',
-		user: 'vonji-api',
-		password: 'vonji-api',
-		database: 'vonji-api-dev',
+		user: 'vonji_api',
+		password: 'vonji_api',
+		database: 'vonji_api_dev',
 		charset: 'utf8'
 	}
 });

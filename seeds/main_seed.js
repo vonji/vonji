@@ -30,7 +30,7 @@ exports.seed = (knex) => {
 		return Promise.all([
 			sknex('comments').del(),
 			sknex('responses').del(),
-			sknex('tags_requests').del({ noSeq: true }),
+			sknex('requests_tags').del({ noSeq: true }),
 		]);
 	}).then(() => {
 		return Promise.all([
@@ -199,7 +199,7 @@ exports.seed = (knex) => {
 		]);
 	}).then(() => {
 		return Promise.all([
-			sknex('tags_requests').insert([
+			sknex('requests_tags').insert([
 				{
 					tag_id: 1,
 					request_id: 1,

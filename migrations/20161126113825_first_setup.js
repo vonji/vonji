@@ -114,9 +114,9 @@ exports.up = (knex) => {
 		]);
 	}).then(() => {
 		return Promise.all([
-			knex.schema.createTable('tags_requests', table => {
-				table.integer('tag_id').references('tags.id');
+			knex.schema.createTable('requests_tags', table => {
 				table.integer('request_id').references('requests.id');
+				table.integer('tag_id').references('tags.id');
 			}),
 			knex.schema.createTable('responses', table => {
 				// belongs to a request
@@ -135,7 +135,7 @@ exports.up = (knex) => {
 
 exports.down = function (knex) {
 	return Promise.all([
-		knex.schema.dropTable('tags_requests'),
+		knex.schema.dropTable('requests_tags'),
 		knex.schema.dropTable('responses'),
 	]).then(() => {
 		return Promise.all([
