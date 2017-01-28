@@ -1,5 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
+import {
+	replyMiddleware,
+	logErrorsMiddleware,
+	errorsHandlerMiddleware,
+} from "./middlewares.js";
 import userRouter from "./routers/user.router";
 import adRouter from "./routers/ad.router";
 import achievementRouter from "./routers/achievement.router";
@@ -11,6 +16,8 @@ import transactionRouter from "./routers/transaction.router";
 import commentRouter from "./routers/comment.router";
 
 const app = express();
+
+app.use(replyMiddleware);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -24,6 +31,9 @@ app.use('/notifications', notificationRouter);
 app.use('/responses', responseRouter);
 app.use('/transactions', transactionRouter);
 app.use('/comments', commentRouter);
+
+app.use(logErrorsMiddleware);
+app.use(errorsHandlerMiddleware);
 
 app.listen(3000, () => {
 	console.log('Application started');

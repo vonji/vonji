@@ -14,6 +14,4 @@ const knex = knexFactory({
 
 const bs = bookshelfFactory(knex);
 
-// bs.plugin('bookshelf-camelcase');
-
-export {bs, knex};
+export { bs, knex };
