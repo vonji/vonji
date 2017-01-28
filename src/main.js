@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
+import passport from 'passport';
+import { BasicStrategy } from 'passport-http';
 import {
 	replyMiddleware,
 	logErrorsMiddleware,
@@ -17,13 +19,15 @@ import commentRouter from "./routers/comment.router";
 
 const app = express();
 
+passport.use(new BasicStrategy((username, password, done) => done(null, { username })));
+
 app.use(replyMiddleware);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/users', userRouter);
-app.use('/achievements', achievementRouter);
+app.use('/achievements', passport.authenticate('basic', { session: false }), achievementRouter);
 app.use('/ads', adRouter);
 app.use('/tags', tagRouter);
 app.use('/requests', requestRouter);
