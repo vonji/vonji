@@ -22,7 +22,14 @@ export const errorsHandlerMiddleware = (err, req, res, next) => {
       res.sendStatus(404);
       break;
     default:
-      res.status(500).send(err);
+      res.status(500).send({
+				name: err.name,
+				status: err.status,
+				code: err.code,
+				details: err.details,
+				message: err.message,
+				stack: err.stack,
+			});
       break;
   }
 };

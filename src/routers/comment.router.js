@@ -1,9 +1,8 @@
-import Comment from "../models/comment.model";
 import express from "express";
-import {simpleRouting} from "../utils/simpleRouting"
+import simpleRouting from "../utils/simpleRouting";
 
 const router = express.Router();
 
-simpleRouting(router, Comment);
+simpleRouting(router, 'comments');
 
 export default router;

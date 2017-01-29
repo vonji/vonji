@@ -117,6 +117,7 @@ exports.up = (knex) => {
 			knex.schema.createTable('requests_tags', table => {
 				table.integer('request_id').references('requests.id');
 				table.integer('tag_id').references('tags.id');
+				table.unique(['request_id', 'tag_id']);
 			}),
 			knex.schema.createTable('responses', table => {
 				// belongs to a request

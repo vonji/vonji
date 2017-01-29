@@ -1,47 +1,29 @@
-import {piper} from './piper';
+import piper from './piper';
+import {
+	fetchOne,
+	fetchAll,
+	save,
+	destroy,
+} from './dbHelpers';
 
-const fetch = async (Model, id) => {
-	try {
-		return await new Model({ id }).fetch({ require: true });
-	} catch(err) {
-		throw { name: 'NotFoundError' };
-	}
-}
-
-const destroy = (Model, id) => {
-	const futureModel = fetch(Model, id);
-	return futureModel.then(model => model.destroy());
-};
-
-const save = (Model, attributes, id) => {
-	const futureModel = id ? fetch(Model, id) : Promise.resolve(new Model());
-	return futureModel.then(model => model.save(attributes));
-};
-
-const fetchAll = Model => Model.fetchAll();
-
-const fetchOne = (Model, id) => {
-	return fetch(Model, id).then(model => model.toJSON());
-};
-
-export const simpleRouting = (router, Model) => {
+export default (router, resource) => {
 	router.get('/:id', piper((req, res) => {
-		return req.reply.ok(fetchOne(Model, req.params.id));
+		return req.reply.ok(fetchOne(resource, req.params.id));
 	}));
 
 	router.get('/', piper((req, res) => {
-		return req.reply.ok(fetchAll(Model));
-	}));
-
-	router.post('/', piper((req, res) => {
-		return req.reply.created(save(Model, req.body));
+		return req.reply.ok(fetchAll(resource));
 	}));
 
 	router.put('/:id', piper((req, res) => {
-		return req.reply.empty(save(Model, req.body, req.params.id));
+		return req.reply.empty(save(resource, req.body, req.params.id));
+	}));
+
+	router.post('/', piper((req, res) => {
+		return req.reply.created(save(resource, req.body));
 	}));
 
 	router.delete('/:id', piper((req, res) => {
-		return req.reply.empty(destroy(Model, req.params.id));
+		return req.reply.empty(destroy(resource, req.params.id));
 	}));
 };

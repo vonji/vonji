@@ -200,14 +200,8 @@ exports.seed = (knex) => {
 	}).then(() => {
 		return Promise.all([
 			sknex('requests_tags').insert([
-				{
-					tag_id: 1,
-					request_id: 1,
-				},
-				{
-					tag_id: 2,
-					request_id: 1,
-				},
+				{ tag_id: 1, request_id: 1, },
+				{ tag_id: 2, request_id: 1, },
 			]),
 			sknex('responses').insert([
 				{
